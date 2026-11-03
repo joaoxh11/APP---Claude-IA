@@ -1,0 +1,1100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2a78d6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Meu Banco">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icone-192.png">
+<title>Meu Banco</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10); --track: #f0efec; --hover: rgba(11,11,11,0.04);
+    --s1: #2a78d6; --s2: #eb6834; --accent: #2a78d6;
+    --good: #0ca30c; --good-text: #006300; --warning: #fab219; --critical: #d03b3b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --track: #2c2c2a; --hover: rgba(255,255,255,0.05);
+      --s1: #3987e5; --s2: #d95926; --accent: #3987e5; --good-text: #0ca30c;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10); --track: #2c2c2a; --hover: rgba(255,255,255,0.05);
+    --s1: #3987e5; --s2: #d95926; --accent: #3987e5; --good-text: #0ca30c;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--page); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 16px 16px 64px; }
+  header { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+  h1 { font-size: 20px; margin: 0; }
+  .sub { color: var(--ink-2); font-size: 12px; }
+  .nota { color: var(--muted); font-size: 12px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  select, input, button, textarea { font: inherit; color: var(--ink); }
+  select, input[type=text], input[type=search], input[type=date], input[type=number], textarea {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; min-height: 34px; min-width: 0;
+  }
+  button { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; min-height: 34px; cursor: pointer; }
+  button:hover { border-color: var(--axis); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  button.primary:hover { filter: brightness(1.08); }
+  button.ghost { border-color: transparent; background: transparent; }
+  button.ghost:hover { background: var(--hover); }
+  button.perigo { color: var(--critical); }
+  button.sm { min-height: 28px; padding: 2px 8px; font-size: 12px; }
+  button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+  button:disabled { opacity: .5; cursor: default; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  a { color: var(--accent); }
+
+  nav.tabs { display: flex; gap: 2px; margin: 14px 0 16px; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  nav.tabs a { padding: 8px 12px; color: var(--ink-2); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; font-weight: 500; }
+  nav.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+  nav.tabs .ic, nav.tabs .ct { display: none; }
+  nav.tabs .ic { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .mesnav { display: flex; align-items: center; gap: 2px; }
+  .mesnav button { min-width: 34px; padding: 6px 8px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; min-width: 0; }
+  .card h2 { font-size: 14px; margin: 0 0 2px; }
+  .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .kpi .label { color: var(--ink-2); font-size: 12px; }
+  .kpi .value { font-size: 24px; font-weight: 600; margin: 4px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kpi .meta { color: var(--muted); font-size: 12px; }
+  .neg { color: var(--critical); }
+  .pos { color: var(--good-text); }
+  .grid2 { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 12px; margin-bottom: 12px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .stack > * + * { margin-top: 12px; }
+
+  .alertas { display: grid; gap: 6px; margin-bottom: 12px; }
+  .alerta { display: flex; gap: 10px; align-items: center; padding: 10px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; }
+  .alerta .ic { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex: none; color: #fff; }
+  .alerta.critico { border-left: 4px solid var(--critical); }
+  .alerta.critico .ic { background: var(--critical); }
+  .alerta.atencao { border-left: 4px solid var(--warning); }
+  .alerta.atencao .ic { background: var(--warning); color: #0b0b0b; }
+
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--ink-2); margin-bottom: 6px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  svg text { fill: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list > li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 9px 0; border-top: 1px solid var(--border); }
+  .list > li:first-child { border-top: 0; }
+  .list .n { min-width: 0; flex: 1; }
+  .list .n small { display: block; color: var(--muted); font-size: 12px; }
+  .list .direita { display: flex; align-items: center; gap: 8px; flex: none; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .empty { color: var(--muted); font-size: 13px; padding: 10px 0; }
+
+  .chip { display: inline-flex; gap: 4px; align-items: center; font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+  .chip .ic { font-weight: 700; }
+  .chip.ok .ic { color: var(--good); }
+  .chip.aviso .ic { color: var(--warning); }
+  .chip.erro .ic { color: var(--critical); }
+  .chip.info .ic { color: var(--accent); }
+  .pill { font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 0 6px; margin-left: 6px; white-space: nowrap; }
+
+  .orc { display: grid; gap: 12px; }
+  .orc-item .topo { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+  .orc-item .topo .nm { color: var(--ink); font-weight: 500; }
+  .barra { position: relative; height: 10px; background: var(--track); border-radius: 5px; margin: 6px 0 3px; overflow: hidden; }
+  .barra > span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--s1); border-radius: 0 5px 5px 0; }
+  .barra > span.prev { background: var(--s1); opacity: .3; }
+  .orc-item .rodape { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: var(--muted); font-weight: 500; font-size: 12px; padding: 6px 8px; border-bottom: 1px solid var(--axis); white-space: nowrap; }
+  td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:hover td { background: var(--hover); }
+  .r { text-align: right; }
+  .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .filtros input[type=search] { flex: 1 1 200px; }
+  .so-cel { display: none; }
+  .pendente td { color: var(--ink-2); }
+  .acoes { display: flex; gap: 2px; justify-content: flex-end; }
+  .tog { border: 0; background: none; padding: 2px 4px; min-height: 0; font-size: 12px; }
+
+  dialog { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--ink); padding: 0; width: min(520px, calc(100vw - 24px)); max-height: calc(100vh - 32px); }
+  dialog.largo { width: min(900px, calc(100vw - 24px)); }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  .dlg-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); z-index: 1; }
+  .dlg-head h2 { margin: 0; font-size: 16px; }
+  .dlg-body { padding: 14px 16px 16px; }
+  .form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
+  .form .full { grid-column: 1 / -1; }
+  .field { display: grid; gap: 4px; }
+  .field label, .lbl { font-size: 12px; color: var(--ink-2); }
+  .field input, .field select, .field textarea { width: 100%; }
+  .seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .seg button { flex: 1; border: 0; border-radius: 0; }
+  .seg button + button { border-left: 1px solid var(--border); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .valor-grande input { font-size: 22px; font-weight: 600; padding: 8px 12px; }
+  .check { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--ink-2); }
+  .form-erro { color: var(--critical); font-size: 13px; min-height: 18px; }
+  .dlg-foot { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 14px; }
+
+  .meta-card .barra { height: 12px; }
+  .meta-card .valor { font-size: 20px; font-weight: 600; }
+  .metas { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .secao { margin-bottom: 12px; }
+
+  #tip { position: fixed; pointer-events: none; z-index: 30; background: var(--surface); color: var(--ink); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.12); opacity: 0; transition: opacity .08s; min-width: 150px; }
+  #tip .t { font-weight: 600; margin-bottom: 4px; }
+  #tip .row { display: flex; justify-content: space-between; gap: 14px; }
+  #tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; }
+  #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 10px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 40; max-width: calc(100vw - 32px); display: flex; gap: 12px; align-items: center; }
+  #toast.on { opacity: 1; pointer-events: auto; }
+  #toast button { background: transparent; color: inherit; border-color: rgba(255,255,255,.3); min-height: 26px; padding: 2px 8px; font-size: 12px; }
+  .oculto .val { filter: blur(7px); user-select: none; }
+  .cel { display: grid; grid-template-columns: 200px 1fr; gap: 16px; align-items: start; }
+  .cel .qr { background: #fff; border-radius: 12px; padding: 6px; border: 1px solid var(--border); }
+  .cel .qr svg { display: block; width: 100%; height: auto; }
+  .cel ol { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; line-height: 1.7; }
+  .pin-in { font-size: 20px; letter-spacing: 6px; text-align: center; width: 9.5em; }
+  .status-on { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); }
+  .status-on::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
+  body { padding-bottom: env(safe-area-inset-bottom); }
+  @media (max-width: 640px) { .cel { grid-template-columns: 1fr; } .cel .qr { max-width: 220px; margin: 0 auto; } }
+  pre.code { background: var(--page); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 12px; white-space: pre-wrap; word-break: break-all; margin: 6px 0; }
+
+  @media (max-width: 900px) {
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid2, .grid3 { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    /* No celular, as abas viram uma barra fixa embaixo, como num app */
+    nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; margin: 0; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 0;
+      padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; overflow: visible; }
+    nav.tabs a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 0 4px; font-size: 10.5px; border-bottom: 0; border-radius: 8px; color: var(--muted); }
+    nav.tabs a[aria-current="page"] { color: var(--accent); }
+    nav.tabs .ic, nav.tabs .ct { display: block; }
+    nav.tabs .lg { display: none; }
+    .wrap { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+    header { margin-bottom: 12px; }
+    #toast { bottom: calc(76px + env(safe-area-inset-bottom)); }
+    .c-desk { display: none; }
+    .so-cel { display: block; color: var(--muted); font-size: 12px; }
+    .kpi .value { font-size: 19px; }
+    .form { grid-template-columns: 1fr; }
+    header .controls { width: 100%; }
+    #novo { flex: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Meu Banco</h1>
+      <div class="sub" id="sub">Controle financeiro</div>
+    </div>
+    <div class="controls">
+      <div class="mesnav">
+        <button class="ghost" id="mes-ant" aria-label="Mês anterior">‹</button>
+        <select id="mes" aria-label="Mês"></select>
+        <button class="ghost" id="mes-prox" aria-label="Próximo mês">›</button>
+      </div>
+      <button id="ocultar" aria-pressed="false" title="Esconder valores (para compartilhar a tela)">Ocultar valores</button>
+      <button class="primary" id="novo">+ Novo lançamento</button>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Seções">
+    <a href="#visao"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg><span class="lg">Visão geral</span><span class="ct">Início</span></a>
+    <a href="#lancamentos"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5zM9 9h6M9 13h6M9 17h3"/></svg><span class="lg">Lançamentos</span><span class="ct">Extrato</span></a>
+    <a href="#pagar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="lg">Contas a pagar</span><span class="ct">A pagar</span></a>
+    <a href="#orcamento"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 6"/></svg><span class="lg">Orçamento</span><span class="ct">Orçamento</span></a>
+    <a href="#metas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="lg">Metas</span><span class="ct">Metas</span></a>
+    <a href="#ajustes"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg><span class="lg">Ajustes</span><span class="ct">Ajustes</span></a>
+  </nav>
+
+  <main id="app"><div class="card empty">Carregando…</div></main>
+</div>
+
+<div id="tip" role="tooltip"></div>
+<div id="toast" role="status" aria-live="polite"><span id="toast-txt"></span></div>
+<dialog id="dlg"><div class="dlg-head"><h2 id="dlg-t"></h2><button class="ghost" onclick="fecharDlg()" aria-label="Fechar">✕</button></div><div class="dlg-body" id="dlg-c"></div></dialog>
+
+<script src="app.js"></script>
+<script>
+// ============ utilidades ============
+const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+const brl = (v) => BRL.format(v ?? 0);
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const MESES_L = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+const nomeMes = (ym, longo) => { const [y, m] = ym.split("-").map(Number); return longo ? `${MESES_L[m - 1]} de ${y}` : MESES[m - 1]; };
+const dataBR = (d) => (d ? d.split("-").reverse().join("/") : "—");
+const diaMes = (d) => d.slice(8, 10) + "/" + d.slice(5, 7);
+const hojeISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const somaMes = (ym, n) => { const [y, m] = ym.split("-").map(Number); const t = y * 12 + m - 1 + n; return `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`; };
+const compacto = (v) => (Math.abs(v) >= 1000 ? `R$ ${(v / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mil` : `R$ ${Math.round(v)}`);
+// Aceita "1.234,56", "20.000", "35,5", "35.50" e "R$ 10"
+const parseBR = (s) => {
+  let t = String(s ?? "").replace(/R\$|\s/g, "");
+  if (t.includes(",")) t = t.replace(/\./g, "").replace(",", ".");
+  else if (/^-?\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, "");
+  return t === "" ? NaN : Number(t);
+};
+const valorInput = (v) => (v == null ? "" : Number(v).toFixed(2).replace(".", ","));
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+const oculto = () => document.body.classList.contains("oculto");
+const v = (n) => (oculto() ? "••••" : brl(n));
+
+async function api(method, url, body) {
+  if (window.MeuBancoLocal) return window.MeuBancoLocal.api(method, url, body); // app no aparelho, sem servidor
+  const r = await fetch(url, { method, headers: method === "GET" ? {} : { "content-type": "application/json", "x-meu-banco": "1" }, body: body === undefined ? undefined : JSON.stringify(body) });
+  if (r.status === 401) { location.href = "/entrar"; throw new Error("Sessão expirada"); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.erro || `Erro ${r.status}`);
+  return j;
+}
+let REMOTO = false; // true quando aberto pelo celular (via computador)
+let APP = false;    // true quando é o app independente, com os dados no próprio aparelho
+// No app independente, "baixar backup/planilha" é feito no próprio aparelho
+document.addEventListener("click", (e) => {
+  const a = e.target.closest?.('a[href^="/api/fin/"]');
+  if (a && window.MeuBancoLocal) { e.preventDefault(); window.MeuBancoLocal.baixar(a.getAttribute("href").split("/api/fin/")[1]).catch((err) => toast(err.message)); }
+});
+
+let toastT;
+function toast(msg, acao) {
+  $("#toast-txt").textContent = msg;
+  const t = $("#toast");
+  t.querySelector("button")?.remove();
+  if (acao) { const b = document.createElement("button"); b.textContent = acao.texto; b.onclick = () => { t.classList.remove("on"); acao.fn(); }; t.appendChild(b); }
+  t.classList.add("on");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), acao ? 6000 : 3500);
+}
+
+const tip = $("#tip");
+function mostrarTip(e, html) {
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + w > innerWidth - 8) x = e.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = e.clientY - h - 14;
+  tip.style.left = Math.max(8, x) + "px"; tip.style.top = Math.max(8, y) + "px";
+}
+const esconderTip = () => (tip.style.opacity = 0);
+
+// ============ estado ============
+let D = null; // resumo do mês atual
+const HOJE = hojeISO();
+let mes = HOJE.slice(0, 7);
+const filtros = { busca: "", categoria: "", tipo: "", conta: "", status: "" };
+
+for (let i = 24; i >= -6; i--) { const m = somaMes(HOJE.slice(0, 7), -i); $("#mes").add(new Option(nomeMes(m, true), m)); }
+$("#mes").value = mes;
+$("#mes").onchange = () => { mes = $("#mes").value; carregar(); };
+$("#mes-ant").onclick = () => mudarMes(-1);
+$("#mes-prox").onclick = () => mudarMes(1);
+function mudarMes(n) { const m = somaMes(mes, n); if (![...$("#mes").options].some((o) => o.value === m)) $("#mes").add(new Option(nomeMes(m, true), m), n < 0 ? 0 : undefined); mes = m; $("#mes").value = m; carregar(); }
+
+const setOculto = (on) => { document.body.classList.toggle("oculto", on); $("#ocultar").setAttribute("aria-pressed", String(on)); store.set("oculto", on ? "1" : "0"); };
+setOculto(store.get("oculto") === "1");
+$("#ocultar").onclick = () => { setOculto(!oculto()); };
+$("#novo").onclick = () => formLancamento();
+
+addEventListener("hashchange", render);
+addEventListener("keydown", (e) => {
+  if (e.key === "n" && !e.ctrlKey && !e.metaKey && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !$("#dlg").open) { e.preventDefault(); formLancamento(); }
+});
+
+async function carregar() {
+  try {
+    if (!carregar.sessao) { carregar.sessao = true; const ss = await api("GET", "/api/sessao"); REMOTO = !!ss.remoto; APP = !!ss.app; }
+    D = await api("GET", `/api/fin/resumo?mes=${mes}`);
+    render();
+  } catch (e) {
+    $("#app").innerHTML = `<div class="card"><strong>Não foi possível carregar.</strong><div class="sub">${esc(e.message)}</div></div>`;
+  }
+}
+
+const aba = () => (location.hash || "#visao").slice(1);
+function render() {
+  if (!D) return;
+  $$("nav.tabs a").forEach((a) => { if (a.getAttribute("href") === "#" + aba()) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  const n = D.lancamentos.length;
+  $("#sub").textContent = `${nomeMes(mes, true)} · ${n} lançamento(s)`;
+  ({ visao: telaVisao, lancamentos: telaLancamentos, pagar: telaPagar, orcamento: telaOrcamento, metas: telaMetas, ajustes: telaAjustes }[aba()] ?? telaVisao)();
+}
+
+const nomeCat = (id) => D.lista_categorias.find((c) => c.id === id)?.nome ?? "Sem categoria";
+const nomeConta = (id) => D.contas.find((c) => c.id === id)?.nome ?? "—";
+const catsDe = (tipo) => D.lista_categorias.filter((c) => c.tipo === tipo);
+const contasAtivas = () => D.contas.filter((c) => !c.arquivada);
+const TIPO_CONTA = { corrente: "Conta corrente", poupanca: "Poupança", carteira: "Dinheiro", cartao: "Cartão de crédito", investimento: "Investimento" };
+
+function situacaoChip(p) {
+  const dias = Math.round((Date.parse(p.vencimento) - Date.parse(HOJE)) / 864e5);
+  if (p.situacao === "vencida") return `<span class="chip erro"><span class="ic">✕</span>Venceu ${dataBR(p.vencimento).slice(0, 5)}</span>`;
+  if (p.situacao === "hoje") return `<span class="chip aviso"><span class="ic">!</span>Vence hoje</span>`;
+  if (p.situacao === "em_breve") return `<span class="chip aviso"><span class="ic">◷</span>Em ${dias} dia${dias > 1 ? "s" : ""}</span>`;
+  return `<span class="chip info"><span class="ic">○</span>Dia ${p.vencimento.slice(8, 10)}</span>`;
+}
+
+// ============ Visão geral ============
+function telaVisao() {
+  const k = D.kpis;
+  const vazio = !D.lancamentos.length && !D.pendentes.length && !D.recorrencias.length;
+  const atual = mes === HOJE.slice(0, 7);
+  const futuro = mes > HOJE.slice(0, 7);
+  const orcadas = D.categorias.filter((c) => c.orcamento);
+  const semOrc = D.categorias.filter((c) => !c.orcamento && c.gasto > 0).slice(0, Math.max(0, 7 - orcadas.length));
+
+  $("#app").innerHTML = `
+    ${vazio ? boasVindas() : ""}
+    ${D.alertas.length ? `<div class="alertas">${D.alertas.map((a) => `<div class="alerta ${a.nivel}"><span class="ic">${a.nivel === "critico" ? "!" : "!"}</span><span>${esc(a.texto)}</span></div>`).join("")}</div>` : ""}
+    <section class="kpis">
+      ${kpi("Saldo nas contas", k.saldo_total, `${contasAtivas().length} conta(s)`, k.saldo_total < 0)}
+      ${kpi("Receitas", k.receitas, k.receitas_previstas > k.receitas ? `previsto ${v(k.receitas_previstas)}` : "no mês")}
+      ${kpi("Despesas", k.despesas, comparacaoDespesas(k))}
+      ${atual || futuro
+        ? kpi("Previsão p/ fim do mês", k.saldo_previsto_fim_mes, "saldo após contas pendentes", k.saldo_previsto_fim_mes < 0)
+        : kpi("Resultado do mês", k.resultado, k.taxa_poupanca !== null ? `você guardou ${k.taxa_poupanca.toLocaleString("pt-BR")}% da renda` : "receitas − despesas", k.resultado < 0)}
+    </section>
+
+    <section class="grid2">
+      <div class="card">
+        <h2>Receitas e despesas</h2>
+        <div class="sub">Últimos 6 meses · só lançamentos pagos</div>
+        <div class="legend" style="margin-top:8px"><span><i style="background:var(--s1)"></i>Receitas</span><span><i style="background:var(--s2)"></i>Despesas</span></div>
+        <div id="fluxo"></div>
+        <details><summary class="nota" style="cursor:pointer;margin-top:6px">Ver como tabela</summary>
+          <table><thead><tr><th>Mês</th><th class="r">Receitas</th><th class="r">Despesas</th><th class="r">Resultado</th></tr></thead><tbody>
+          ${D.fluxo.map((f) => `<tr><td>${nomeMes(f.mes, true)}</td><td class="r num val">${brl(f.receitas)}</td><td class="r num val">${brl(f.despesas)}</td><td class="r num val ${f.receitas - f.despesas < 0 ? "neg" : ""}">${brl(f.receitas - f.despesas)}</td></tr>`).join("")}
+          </tbody></table></details>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Orçamento do mês</h2><div class="sub">${orcadas.length ? `<span class="val">${brl(k.gasto_orcado)}</span> de <span class="val">${brl(k.total_orcado)}</span> planejados` : "Gastos por categoria"}</div></div>
+          <a href="#orcamento" class="nota">${orcadas.length ? "Ajustar" : "Definir limites"}</a></div>
+        <div class="orc">${[...orcadas, ...semOrc].map(orcItem).join("") || `<div class="empty">Nenhum gasto neste mês.</div>`}</div>
+      </div>
+    </section>
+
+    <section class="grid3">
+      <div class="card">
+        <div class="card-head"><div><h2>Contas a pagar</h2><div class="sub">Pendentes neste mês</div></div><a href="#pagar" class="nota">Ver todas</a></div>
+        <ul class="list">${D.pendentes.slice(0, 6).map(itemPendente).join("") || `<li class="empty">Nada pendente ✓</li>`}</ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Contas e carteiras</h2><div class="sub">Saldo atual</div></div><a href="#ajustes" class="nota">Gerenciar</a></div>
+        <ul class="list">${contasAtivas().map((c) => `<li><span class="n">${esc(c.nome)}<small>${TIPO_CONTA[c.tipo]}</small></span><span class="num val ${c.saldo < 0 && c.tipo !== "cartao" ? "neg" : ""}">${brl(c.saldo)}</span></li>`).join("")}</ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Metas</h2><div class="sub">Quanto já guardou</div></div><a href="#metas" class="nota">${D.metas.length ? "Ver metas" : "Criar meta"}</a></div>
+        ${D.metas.length ? `<ul class="list">${D.metas.slice(0, 4).map((m) => `<li style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><span>${esc(m.nome)}</span><span class="num nota">${m.pct.toLocaleString("pt-BR")}%</span></div>
+          <div class="barra" role="img" aria-label="${m.pct}% da meta"><span style="width:${m.pct}%"></span></div><div class="nota"><span class="val">${brl(m.guardado)}</span> de <span class="val">${brl(m.alvo)}</span></div></li>`).join("")}</ul>` : `<div class="empty">Crie uma meta (reserva de emergência, viagem…) e acompanhe aqui.</div>`}
+      </div>
+    </section>
+
+    ${D.maiores_gastos.length ? `<section class="card"><h2>Maiores gastos do mês</h2><ul class="list" style="margin-top:8px">${D.maiores_gastos.map((g) => `<li><span class="n">${esc(g.descricao)}<small>${dataBR(g.data).slice(0, 5)} · ${esc(g.categoria)}</small></span><span class="num val">${brl(g.valor)}</span></li>`).join("")}</ul></section>` : ""}`;
+
+  graficoFluxo($("#fluxo"), D.fluxo);
+  ligarPendentes();
+}
+
+function boasVindas() {
+  return `<div class="card secao" style="border-left:4px solid var(--accent)">
+    <h2 style="font-size:16px">Bem-vindo ao seu controle financeiro 👋</h2>
+    <p class="sub" style="margin:6px 0 10px">Comece por aqui (pode fazer em qualquer ordem):</p>
+    <ol class="sub" style="margin:0 0 12px;padding-left:20px;line-height:1.9">
+      <li><a href="#ajustes">Informe o saldo atual</a> da sua conta e da carteira.</li>
+      <li><a href="#pagar">Cadastre as contas fixas</a> do mês: salário, aluguel, luz, internet…</li>
+      <li>Registre os gastos do dia a dia no botão <strong>+ Novo lançamento</strong> (atalho: tecla N), ou <a href="#ajustes">importe o extrato</a> do banco (OFX ou CSV).</li>
+      <li><a href="#orcamento">Defina limites</a> por categoria e acompanhe os alertas.</li>
+    </ol>
+  </div>`;
+}
+
+// Mostra a diferença em reais (porcentagem engana quando o mês anterior teve pouco gasto)
+function comparacaoDespesas(k) {
+  const ant = nomeMes(somaMes(mes, -1));
+  const ref = k.comparacao_parcial ? `no mesmo período de ${ant}` : `que em ${ant}`;
+  if (!k.despesas_mes_anterior && !k.despesas) return "no mês";
+  const dif = k.despesas - k.despesas_mes_anterior;
+  if (Math.abs(dif) < 0.01) return `igual ${ref}`;
+  return `${dif > 0 ? "▲" : "▼"} <span class="val">${brl(Math.abs(dif))}</span> ${dif > 0 ? "a mais" : "a menos"} ${ref}`;
+}
+const kpi = (label, valor, meta, ruim) => `<div class="card kpi"><div class="label">${label}</div><div class="value val ${ruim ? "neg" : ""}">${brl(valor)}</div><div class="meta">${meta}</div></div>`;
+
+function orcItem(c) {
+  const lim = c.orcamento;
+  const pctG = lim ? Math.min(100, (c.gasto / lim) * 100) : 0;
+  const pctP = lim ? Math.min(100 - pctG, (c.previsto / lim) * 100) : 0;
+  const chip = !lim ? "" : c.status === "estourado" ? `<span class="chip erro"><span class="ic">✕</span>Estourou ${v(c.gasto - lim)}</span>`
+    : c.status === "atencao" ? `<span class="chip aviso"><span class="ic">!</span>${c.pct.toLocaleString("pt-BR")}% usado</span>`
+    : `<span class="chip ok"><span class="ic">✓</span>Resta ${v(lim - c.gasto)}</span>`;
+  return `<div class="orc-item" data-tip="${esc(JSON.stringify({ n: c.categoria, g: c.gasto, p: c.previsto, l: lim }))}">
+    <div class="topo"><span class="nm">${esc(c.categoria)}</span><span class="num val">${brl(c.gasto)}${lim ? ` <span class="nota">/ ${brl(lim)}</span>` : ""}</span></div>
+    ${lim ? `<div class="barra"><span style="width:${pctG}%"></span><span class="prev" style="left:${pctG}%;width:${pctP}%"></span></div><div class="rodape"><span>${c.previsto ? `+ <span class="val">${brl(c.previsto)}</span> previsto` : ""}</span>${chip}</div>` : ""}
+  </div>`;
+}
+
+function itemPendente(p) {
+  return `<li><span class="n">${esc(p.descricao)}${p.parcela ? `<span class="pill">${p.parcela}</span>` : ""}<small>${p.tipo === "receita" ? "A receber" : "A pagar"} · ${esc(p.categoria ?? "")}</small></span>
+    <span class="direita"><span style="text-align:right"><span class="num val ${p.tipo === "receita" ? "pos" : ""}">${brl(p.valor)}</span><br>${situacaoChip(p)}</span>
+    <button class="sm" data-pagar="${p.origem}:${p.id}:${p.vencimento.slice(0, 7)}">${p.tipo === "receita" ? "Recebi" : "Paguei"}</button></span></li>`;
+}
+
+function ligarPendentes() {
+  $$("[data-pagar]").forEach((b) => (b.onclick = async () => {
+    const [origem, id, m] = b.dataset.pagar.split(":");
+    b.disabled = true;
+    try {
+      if (origem === "lancamento") await api("PUT", `/api/fin/lancamentos/${id}`, { pago: true });
+      else await api("POST", `/api/fin/recorrencias/${id}/pagar`, { mes: m });
+      toast("Registrado como pago ✓"); carregar();
+    } catch (e) { toast(e.message); b.disabled = false; }
+  }));
+  $$("[data-tip]").forEach((el) => {
+    const t = JSON.parse(el.dataset.tip);
+    el.onmousemove = (e) => mostrarTip(e, `<div class="t">${esc(t.n)}</div><div class="row"><span>Gasto</span><span>${v(t.g)}</span></div>${t.p ? `<div class="row"><span>Previsto</span><span>${v(t.p)}</span></div>` : ""}${t.l ? `<div class="row"><span>Limite</span><span>${v(t.l)}</span></div><div class="row"><span>Disponível</span><span>${v(t.l - t.g - t.p)}</span></div>` : ""}`);
+    el.onmouseleave = esconderTip;
+  });
+}
+
+function graficoFluxo(el, fluxo) {
+  const W = el.clientWidth || 600, H = 230, m = { t: 8, r: 6, b: 26, l: 70 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const max = Math.max(1, ...fluxo.flatMap((f) => [f.receitas, f.despesas]));
+  const passo = Math.pow(10, Math.floor(Math.log10(max)));
+  const topo = Math.ceil(max / passo) * passo;
+  const y = (val) => m.t + ih - (val / topo) * ih;
+  const gw = iw / fluxo.length, bw = Math.min(28, (gw - 18) / 2);
+  const barra = (x, val, cor) => {
+    const top = y(val), h = m.t + ih - top;
+    if (h < 0.5) return "";
+    const r = Math.min(4, h, bw / 2);
+    return `<path fill="${cor}" d="M${x},${m.t + ih} V${top + r} Q${x},${top} ${x + r},${top} H${x + bw - r} Q${x + bw},${top} ${x + bw},${top + r} V${m.t + ih} Z"/>`;
+  };
+  el.innerHTML = `<svg width="${W}" height="${H}" role="img" aria-label="Receitas e despesas por mês">
+    ${[0, 0.25, 0.5, 0.75, 1].map((f) => f * topo).map((t) => `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}" stroke="var(--grid)"/><text class="val" x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${compacto(t)}</text>`).join("")}
+    <line x1="${m.l}" x2="${W - m.r}" y1="${m.t + ih}" y2="${m.t + ih}" stroke="var(--axis)"/>
+    ${fluxo.map((f, i) => { const cx = m.l + gw * i + gw / 2; return `${barra(cx - bw - 1, f.receitas, "var(--s1)")}${barra(cx + 1, f.despesas, "var(--s2)")}
+      <text x="${cx}" y="${H - 8}" text-anchor="middle" ${f.mes === mes ? 'style="font-weight:700;fill:var(--ink-2)"' : ""}>${nomeMes(f.mes)}</text>
+      <rect data-i="${i}" x="${m.l + gw * i}" y="${m.t}" width="${gw}" height="${ih}" fill="transparent"/>`; }).join("")}
+  </svg>`;
+  $$("rect[data-i]", el).forEach((r) => {
+    const f = fluxo[r.dataset.i];
+    r.onmousemove = (e) => mostrarTip(e, `<div class="t">${nomeMes(f.mes, true)}</div><div class="row"><span><i style="background:var(--s1)"></i>Receitas</span><span>${v(f.receitas)}</span></div><div class="row"><span><i style="background:var(--s2)"></i>Despesas</span><span>${v(f.despesas)}</span></div><div class="row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px"><span>Resultado</span><span>${v(f.receitas - f.despesas)}</span></div>`);
+    r.onmouseleave = esconderTip;
+  });
+}
+
+// ============ Lançamentos ============
+function telaLancamentos() {
+  const cats = [...new Set(D.lancamentos.map((l) => l.categoria_id).filter(Boolean))].map((id) => ({ id, nome: nomeCat(id) })).sort((a, b) => a.nome.localeCompare(b.nome));
+  $("#app").innerHTML = `
+    <section class="card">
+      <div class="card-head"><div><h2>Lançamentos de ${nomeMes(mes, true)}</h2><div class="sub" id="lanc-resumo"></div></div>
+        <div class="controls"><a class="nota" href="/api/fin/exportar.csv">Exportar CSV</a></div></div>
+      <div class="filtros">
+        <input type="search" id="f-busca" placeholder="Buscar descrição…" value="${esc(filtros.busca)}" aria-label="Buscar">
+        <select id="f-tipo" aria-label="Tipo"><option value="">Todos os tipos</option><option value="despesa">Despesas</option><option value="receita">Receitas</option><option value="transferencia">Transferências</option></select>
+        <select id="f-cat" aria-label="Categoria"><option value="">Todas as categorias</option>${cats.map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("")}</select>
+        <select id="f-conta" aria-label="Conta"><option value="">Todas as contas</option>${D.contas.map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("")}</select>
+        <select id="f-status" aria-label="Situação"><option value="">Pagos e pendentes</option><option value="pago">Só pagos</option><option value="pendente">Só pendentes</option></select>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="c-desk">Data</th><th>Descrição</th><th class="c-desk">Categoria</th><th class="c-desk">Conta</th><th class="r">Valor</th><th class="c-desk">Situação</th><th></th></tr></thead>
+        <tbody id="lanc-body"></tbody></table></div>
+    </section>`;
+  for (const [id, k] of [["f-tipo", "tipo"], ["f-cat", "categoria"], ["f-conta", "conta"], ["f-status", "status"]]) { $("#" + id).value = filtros[k]; $("#" + id).onchange = (e) => { filtros[k] = e.target.value; tabelaLanc(); }; }
+  $("#f-busca").oninput = (e) => { filtros.busca = e.target.value; tabelaLanc(); };
+  tabelaLanc();
+}
+
+function tabelaLanc() {
+  const q = filtros.busca.trim().toLowerCase();
+  const xs = D.lancamentos.filter((l) => (!q || l.descricao.toLowerCase().includes(q)) && (!filtros.tipo || l.tipo === filtros.tipo) && (!filtros.categoria || l.categoria_id === filtros.categoria) && (!filtros.conta || l.conta_id === filtros.conta || l.conta_destino_id === filtros.conta) && (!filtros.status || (filtros.status === "pago") === l.pago));
+  const tot = (t) => xs.filter((l) => l.tipo === t).reduce((s, l) => s + l.valor, 0);
+  $("#lanc-resumo").innerHTML = `${xs.length} lançamento(s) · receitas <span class="val">${brl(tot("receita"))}</span> · despesas <span class="val">${brl(tot("despesa"))}</span>`;
+  $("#lanc-body").innerHTML = xs.map((l) => {
+    const sinal = l.tipo === "receita" ? "+" : l.tipo === "despesa" ? "−" : "";
+    const cat = l.tipo === "transferencia" ? `${esc(nomeConta(l.conta_id))} → ${esc(nomeConta(l.conta_destino_id))}` : esc(nomeCat(l.categoria_id));
+    return `<tr class="${l.pago ? "" : "pendente"}">
+      <td class="num c-desk">${dataBR(l.data).slice(0, 5)}</td>
+      <td>${esc(l.descricao)}${l.parcela ? `<span class="pill">${l.parcela}</span>` : ""}${l.importado ? `<span class="pill" title="Importado de extrato">extrato</span>` : ""}${l.obs ? `<div class="nota">${esc(l.obs)}</div>` : ""}
+        <small class="so-cel">${dataBR(l.data).slice(0, 5)} · ${cat}${l.pago ? "" : " · pendente"}</small></td>
+      <td class="c-desk">${cat}</td>
+      <td class="c-desk">${l.tipo === "transferencia" ? "" : esc(nomeConta(l.conta_id))}</td>
+      <td class="r num val ${l.tipo === "receita" ? "pos" : ""}">${sinal}${brl(l.valor)}</td>
+      <td class="c-desk"><button class="tog" data-tog="${l.id}" title="Clique para alternar">${l.pago ? `<span class="chip ok"><span class="ic">✓</span>Pago</span>` : `<span class="chip info"><span class="ic">○</span>Pendente</span>`}</button></td>
+      <td><div class="acoes"><button class="ghost sm" data-edit="${l.id}" aria-label="Editar">Editar</button></div></td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="7" class="empty">Nenhum lançamento${D.lancamentos.length ? " com esses filtros" : " neste mês. Clique em + Novo lançamento"}.</td></tr>`;
+  $$("[data-edit]").forEach((b) => (b.onclick = () => formLancamento(D.lancamentos.find((l) => l.id === b.dataset.edit))));
+  $$("[data-tog]").forEach((b) => (b.onclick = async () => {
+    const l = D.lancamentos.find((x) => x.id === b.dataset.tog);
+    try { await api("PUT", `/api/fin/lancamentos/${l.id}`, { pago: !l.pago }); carregar(); } catch (e) { toast(e.message); }
+  }));
+}
+
+// ============ formulário de lançamento ============
+function abrirDlg(titulo, html, largo) {
+  $("#dlg-t").textContent = titulo; $("#dlg-c").innerHTML = html;
+  $("#dlg").classList.toggle("largo", !!largo);
+  if (!$("#dlg").open) $("#dlg").showModal();
+}
+function fecharDlg() { $("#dlg").close(); }
+
+function formLancamento(l, preset = {}) {
+  const edit = !!l;
+  let tipo = l?.tipo ?? preset.tipo ?? "despesa";
+  const contas = contasAtivas();
+  const sugest = D.sugestoes ?? [];
+  const opcoesCat = (t) => catsDe(t).map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("");
+  const dataPadrao = mes === HOJE.slice(0, 7) ? HOJE : `${mes}-01`;
+  abrirDlg(edit ? "Editar lançamento" : "Novo lançamento", `
+    <form id="fl" class="form" autocomplete="off">
+      <div class="full seg" role="group" aria-label="Tipo">
+        ${["despesa", "receita", "transferencia"].map((t) => `<button type="button" data-tipo="${t}" ${edit && t !== tipo ? "disabled" : ""}>${{ despesa: "Despesa", receita: "Receita", transferencia: "Transferência" }[t]}</button>`).join("")}
+      </div>
+      <div class="field full valor-grande"><label for="l-valor">Valor (R$)</label><input id="l-valor" type="text" inputmode="decimal" required placeholder="0,00" value="${valorInput(l?.valor)}"></div>
+      <div class="field full"><label for="l-desc">Descrição</label><input id="l-desc" type="text" required list="l-sug" maxlength="120" placeholder="Ex.: Mercado do mês" value="${esc(l?.descricao ?? "")}">
+        <datalist id="l-sug">${[...new Set(sugest.map((s) => s.descricao))].slice(0, 200).map((s) => `<option value="${esc(s)}">`).join("")}</datalist></div>
+      <div class="field"><label for="l-data">Data</label><input id="l-data" type="date" required value="${l?.data ?? dataPadrao}"></div>
+      <div class="field" id="w-cat"><label for="l-cat">Categoria</label><select id="l-cat"></select></div>
+      <div class="field"><label for="l-conta" id="lbl-conta">Conta</label><select id="l-conta">${contas.map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("")}</select></div>
+      <div class="field" id="w-dest"><label for="l-dest">Para a conta</label><select id="l-dest">${contas.map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("")}</select></div>
+      <div class="field" id="w-parc"><label for="l-parc">Parcelas</label><select id="l-parc">${Array.from({ length: 24 }, (_, i) => `<option value="${i + 1}">${i ? `${i + 1}x` : "À vista"}</option>`).join("")}</select></div>
+      <div class="field full"><label for="l-obs">Observação (opcional)</label><input id="l-obs" type="text" maxlength="500" value="${esc(l?.obs ?? "")}"></div>
+      <label class="check full"><input type="checkbox" id="l-pago"> <span id="lbl-pago">Já foi pago</span></label>
+      <div class="form-erro full" id="l-erro"></div>
+      <div class="dlg-foot full">
+        ${edit ? `<button type="button" class="perigo" id="l-del" style="margin-right:auto">Apagar</button>` : ""}
+        <button type="button" onclick="fecharDlg()">Cancelar</button>
+        ${edit ? "" : `<button type="submit" data-mais="1">Salvar e adicionar outro</button>`}
+        <button type="submit" class="primary">Salvar</button>
+      </div>
+    </form>`);
+  const f = $("#fl");
+  const setTipo = (t) => {
+    tipo = t;
+    $$("[data-tipo]", f).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tipo === t)));
+    $("#w-cat").hidden = t === "transferencia";
+    $("#w-dest").hidden = t !== "transferencia";
+    $("#w-parc").hidden = edit || t !== "despesa";
+    $("#lbl-conta").textContent = t === "transferencia" ? "Da conta" : "Conta";
+    $("#lbl-pago").textContent = t === "receita" ? "Já recebi" : t === "transferencia" ? "Já foi feita" : "Já foi pago";
+    const atual = $("#l-cat").value;
+    $("#l-cat").innerHTML = t === "transferencia" ? "" : opcoesCat(t);
+    if (atual && [...$("#l-cat").options].some((o) => o.value === atual)) $("#l-cat").value = atual;
+  };
+  $$("[data-tipo]", f).forEach((b) => (b.onclick = () => setTipo(b.dataset.tipo)));
+  setTipo(tipo);
+  if (l) { $("#l-cat").value = l.categoria_id ?? ""; $("#l-conta").value = l.conta_id; if (l.conta_destino_id) $("#l-dest").value = l.conta_destino_id; $("#l-pago").checked = l.pago; }
+  else {
+    if (preset.conta_id) $("#l-conta").value = preset.conta_id;
+    if (contas[1]) $("#l-dest").value = contas[1].id;
+    $("#l-pago").checked = $("#l-data").value <= HOJE;
+    $("#l-data").onchange = () => ($("#l-pago").checked = $("#l-data").value <= HOJE);
+  }
+  // Ao escolher uma descrição já usada, sugere a mesma categoria e conta
+  $("#l-desc").onchange = () => {
+    if (edit) return;
+    const s = sugest.find((x) => x.descricao.toLowerCase() === $("#l-desc").value.trim().toLowerCase() && x.tipo === tipo);
+    if (s) { if (s.categoria_id) $("#l-cat").value = s.categoria_id; if (s.conta_id) $("#l-conta").value = s.conta_id; }
+  };
+  $("#l-parc").onchange = () => { const n = +$("#l-parc").value; $("#l-erro").textContent = n > 1 && parseBR($("#l-valor").value) > 0 ? `${n} parcelas de ${brl(parseBR($("#l-valor").value) / n)} — informe o valor total.` : ""; };
+  setTimeout(() => $("#l-valor").focus(), 30);
+
+  let mais = false;
+  $$("button[type=submit]", f).forEach((b) => (b.onclick = () => { mais = !!b.dataset.mais; }));
+  f.onsubmit = async (e) => {
+    e.preventDefault();
+    const valor = parseBR($("#l-valor").value);
+    if (!(valor > 0)) { $("#l-erro").textContent = "Informe um valor maior que zero."; $("#l-valor").focus(); return; }
+    const body = { tipo, valor, descricao: $("#l-desc").value, data: $("#l-data").value, conta_id: $("#l-conta").value, pago: $("#l-pago").checked, obs: $("#l-obs").value };
+    if (tipo === "transferencia") body.conta_destino_id = $("#l-dest").value; else body.categoria_id = $("#l-cat").value;
+    if (!edit && tipo === "despesa") body.parcelas = +$("#l-parc").value;
+    try {
+      if (edit) await api("PUT", `/api/fin/lancamentos/${l.id}`, body); else await api("POST", "/api/fin/lancamentos", body);
+      toast(edit ? "Lançamento atualizado ✓" : body.parcelas > 1 ? `Compra registrada em ${body.parcelas} parcelas ✓` : "Lançamento salvo ✓");
+      if (mais) { $("#l-valor").value = ""; $("#l-desc").value = ""; $("#l-obs").value = ""; $("#l-parc").value = "1"; $("#l-erro").textContent = ""; $("#l-valor").focus(); }
+      else fecharDlg();
+      carregar();
+    } catch (err) { $("#l-erro").textContent = err.message; }
+  };
+  if (edit) $("#l-del").onclick = async () => {
+    const todas = l.grupo_parcelas && confirm(`Este lançamento é a parcela ${l.parcela}.\n\nOK = apagar TODAS as parcelas\nCancelar = apagar só esta`);
+    if (!l.grupo_parcelas && !confirm(`Apagar "${l.descricao}"?`)) return;
+    try {
+      await api("DELETE", `/api/fin/lancamentos/${l.id}${todas ? "?parcelas=todas" : ""}`, {});
+      fecharDlg(); toast("Lançamento apagado"); carregar();
+    } catch (err) { $("#l-erro").textContent = err.message; }
+  };
+}
+
+// ============ Contas a pagar ============
+function telaPagar() {
+  const desp = D.pendentes.filter((p) => p.tipo === "despesa"), rec = D.pendentes.filter((p) => p.tipo === "receita");
+  const soma = (xs) => xs.reduce((s, p) => s + p.valor, 0);
+  $("#app").innerHTML = `
+    <section class="grid2">
+      <div class="card">
+        <div class="card-head"><div><h2>A pagar em ${nomeMes(mes, true)}</h2><div class="sub">${desp.length} conta(s) · <span class="val">${brl(soma(desp))}</span></div></div></div>
+        <ul class="list">${desp.map(itemPendente).join("") || `<li class="empty">Nenhuma conta pendente ✓</li>`}</ul>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>A receber</h2><div class="sub">${rec.length} item(ns) · <span class="val">${brl(soma(rec))}</span></div></div></div>
+        <ul class="list">${rec.map(itemPendente).join("") || `<li class="empty">Nada a receber pendente.</li>`}</ul>
+      </div>
+    </section>
+    <section class="card">
+      <div class="card-head"><div><h2>Contas fixas</h2><div class="sub">Repetem todo mês e aparecem automaticamente em "a pagar" / "a receber"</div></div>
+        <button class="primary sm" id="nova-rec">+ Nova conta fixa</button></div>
+      <ul class="list">${D.recorrencias.map((r) => `<li><span class="n">${esc(r.descricao)}${r.ativa ? "" : `<span class="pill">pausada</span>`}<small>Todo dia ${r.dia} · ${esc(nomeCat(r.categoria_id))} · ${esc(nomeConta(r.conta_id))}${r.fim ? ` · até ${nomeMes(r.fim)}/${r.fim.slice(0, 4)}` : ""}</small></span>
+        <span class="direita"><span class="num val ${r.tipo === "receita" ? "pos" : ""}">${r.tipo === "receita" ? "+" : "−"}${brl(r.valor)}</span><button class="ghost sm" data-rec="${r.id}">Editar</button></span></li>`).join("") || `<li class="empty">Cadastre salário, aluguel, luz, internet, academia, streaming… e nunca mais esqueça uma conta.</li>`}</ul>
+    </section>`;
+  ligarPendentes();
+  $("#nova-rec").onclick = () => formRecorrencia();
+  $$("[data-rec]").forEach((b) => (b.onclick = () => formRecorrencia(D.recorrencias.find((r) => r.id === b.dataset.rec))));
+}
+
+function formRecorrencia(r) {
+  let tipo = r?.tipo ?? "despesa";
+  abrirDlg(r ? "Editar conta fixa" : "Nova conta fixa", `
+    <form id="fr" class="form">
+      <div class="full seg">${["despesa", "receita"].map((t) => `<button type="button" data-tipo="${t}">${t === "despesa" ? "Conta a pagar" : "Receita fixa"}</button>`).join("")}</div>
+      <div class="field full"><label for="r-desc">Descrição</label><input id="r-desc" type="text" required placeholder="Ex.: Aluguel, Salário, Internet" value="${esc(r?.descricao ?? "")}"></div>
+      <div class="field"><label for="r-valor">Valor (R$)</label><input id="r-valor" type="text" inputmode="decimal" required value="${valorInput(r?.valor)}"></div>
+      <div class="field"><label for="r-dia">Dia do vencimento</label><input id="r-dia" type="number" min="1" max="31" required value="${r?.dia ?? 10}"></div>
+      <div class="field"><label for="r-cat">Categoria</label><select id="r-cat"></select></div>
+      <div class="field"><label for="r-conta">Conta</label><select id="r-conta">${contasAtivas().map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("")}</select></div>
+      <div class="field"><label for="r-ini">A partir de</label><input id="r-ini" type="month" required value="${r?.inicio ?? mes}"></div>
+      <div class="field"><label for="r-fim">Até (opcional)</label><input id="r-fim" type="month" value="${r?.fim ?? ""}"></div>
+      ${r ? `<label class="check full"><input type="checkbox" id="r-ativa" ${r.ativa ? "checked" : ""}> Ativa</label>` : ""}
+      <div class="form-erro full" id="r-erro"></div>
+      <div class="dlg-foot full">${r ? `<button type="button" class="perigo" id="r-del" style="margin-right:auto">Apagar</button>` : ""}<button type="button" onclick="fecharDlg()">Cancelar</button><button class="primary" type="submit">Salvar</button></div>
+    </form>`);
+  const setTipo = (t) => { tipo = t; $$("#fr [data-tipo]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tipo === t))); $("#r-cat").innerHTML = catsDe(t).map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join(""); };
+  $$("#fr [data-tipo]").forEach((b) => (b.onclick = () => setTipo(b.dataset.tipo)));
+  setTipo(tipo);
+  if (r) { $("#r-cat").value = r.categoria_id; $("#r-conta").value = r.conta_id; }
+  $("#fr").onsubmit = async (e) => {
+    e.preventDefault();
+    const body = { tipo, descricao: $("#r-desc").value, valor: parseBR($("#r-valor").value), dia: +$("#r-dia").value, categoria_id: $("#r-cat").value, conta_id: $("#r-conta").value, inicio: $("#r-ini").value, fim: $("#r-fim").value || undefined, ativa: r ? $("#r-ativa").checked : true };
+    try { r ? await api("PUT", `/api/fin/recorrencias/${r.id}`, body) : await api("POST", "/api/fin/recorrencias", body); fecharDlg(); toast("Conta fixa salva ✓"); carregar(); }
+    catch (err) { $("#r-erro").textContent = err.message; }
+  };
+  if (r) $("#r-del").onclick = async () => {
+    if (!confirm(`Apagar a conta fixa "${r.descricao}"? Os pagamentos já registrados continuam nos lançamentos.`)) return;
+    await api("DELETE", `/api/fin/recorrencias/${r.id}`, {}); fecharDlg(); toast("Conta fixa apagada"); carregar();
+  };
+}
+
+// ============ Orçamento ============
+function telaOrcamento() {
+  const k = D.kpis;
+  const porId = new Map(D.categorias.map((c) => [c.categoria_id, c]));
+  const receitaRef = Math.max(k.receitas_previstas, D.fluxo.slice(0, 5).reduce((s, f) => s + f.receitas, 0) / 5 || 0);
+  $("#app").innerHTML = `
+    <section class="grid2">
+      <div class="card">
+        <div class="card-head"><div><h2>Limites por categoria</h2><div class="sub">Valem para todos os meses. Deixe em branco para não limitar.</div></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Categoria</th><th class="r">Gasto em ${nomeMes(mes)}</th><th style="width:150px">Limite mensal</th><th class="c-desk" style="width:30%"></th></tr></thead>
+          <tbody>${catsDe("despesa").map((c) => {
+            const r = porId.get(c.id);
+            const pct = c.orcamento ? Math.min(100, ((r?.gasto ?? 0) / c.orcamento) * 100) : 0;
+            return `<tr><td>${esc(c.nome)}</td><td class="r num val">${brl(r?.gasto ?? 0)}</td>
+              <td><input type="text" inputmode="decimal" data-orc="${c.id}" value="${c.orcamento ? valorInput(c.orcamento) : ""}" placeholder="sem limite" style="width:100%" aria-label="Limite de ${esc(c.nome)}"></td>
+              <td class="c-desk">${c.orcamento ? `<div class="barra" style="margin:0"><span style="width:${pct}%"></span></div>` : ""}</td></tr>`;
+          }).join("")}</tbody></table></div>
+        <p class="nota" style="margin-top:10px">As alterações são salvas automaticamente.</p>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h2>Resumo do planejamento</h2>
+          <ul class="list" style="margin-top:8px">
+            <li><span class="n">Total de limites</span><span class="num val">${brl(k.total_orcado)}</span></li>
+            <li><span class="n">Gasto nas categorias com limite</span><span class="num val">${brl(k.gasto_orcado)}</span></li>
+            <li><span class="n">Renda de referência<small>receitas previstas no mês ou média recente</small></span><span class="num val">${brl(receitaRef)}</span></li>
+            <li><span class="n">Sobra planejada</span><span class="num val ${receitaRef - k.total_orcado < 0 ? "neg" : ""}">${brl(receitaRef - k.total_orcado)}</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Dica: regra 50-30-20</h2>
+          <p class="sub" style="margin:6px 0 8px">Uma referência comum para dividir a renda:</p>
+          <ul class="list">
+            <li><span class="n">50% necessidades<small>moradia, contas, mercado, transporte, saúde</small></span><span class="num val">${brl(receitaRef * 0.5)}</span></li>
+            <li><span class="n">30% estilo de vida<small>lazer, restaurantes, compras, assinaturas</small></span><span class="num val">${brl(receitaRef * 0.3)}</span></li>
+            <li><span class="n">20% futuro<small>reserva, metas, investimentos</small></span><span class="num val">${brl(receitaRef * 0.2)}</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>`;
+  $$("[data-orc]").forEach((inp) => (inp.onchange = async () => {
+    const c = D.lista_categorias.find((x) => x.id === inp.dataset.orc);
+    const val = inp.value.trim() ? parseBR(inp.value) : null;
+    if (val !== null && !(val >= 0)) { toast("Valor inválido"); return; }
+    try { await api("PUT", `/api/fin/categorias/${c.id}`, { nome: c.nome, tipo: c.tipo, orcamento: val }); toast(`Limite de ${c.nome} salvo ✓`); carregar(); } catch (e) { toast(e.message); }
+  }));
+}
+
+// ============ Metas ============
+function telaMetas() {
+  $("#app").innerHTML = `
+    <div class="card-head"><div><h2 style="font-size:16px;margin:0">Metas de economia</h2><div class="sub">Reserva de emergência, viagem, troca de carro… registre quanto guardou e acompanhe.</div></div><button class="primary" id="nova-meta">+ Nova meta</button></div>
+    <div class="metas">${D.metas.map((m) => `
+      <div class="card meta-card">
+        <div style="display:flex;justify-content:space-between;gap:8px"><h2>${esc(m.nome)}</h2>${m.pct >= 100 ? `<span class="chip ok"><span class="ic">✓</span>Concluída</span>` : `<span class="nota num">${m.pct.toLocaleString("pt-BR")}%</span>`}</div>
+        <div class="valor val" style="margin-top:6px">${brl(m.guardado)}</div>
+        <div class="nota">de <span class="val">${brl(m.alvo)}</span>${m.prazo ? ` · até ${dataBR(m.prazo)}` : ""}</div>
+        <div class="barra" role="img" aria-label="${m.pct}% da meta"><span style="width:${m.pct}%"></span></div>
+        <div class="nota">${m.falta > 0 ? `Faltam <span class="val">${brl(m.falta)}</span>${m.por_mes ? ` · guarde <span class="val">${brl(m.por_mes)}</span>/mês para chegar no prazo` : ""}` : "Meta atingida 🎉"}</div>
+        <div class="dlg-foot" style="justify-content:flex-start">
+          <button class="primary sm" data-aporte="${m.id}">Guardar</button><button class="sm" data-resgate="${m.id}">Retirar</button><button class="ghost sm" data-meta="${m.id}">Editar</button>
+        </div>
+      </div>`).join("") || `<div class="card empty">Você ainda não tem metas. Que tal começar por uma reserva de emergência (3 a 6 meses dos seus gastos)?</div>`}
+    </div>`;
+  $("#nova-meta").onclick = () => formMeta();
+  $$("[data-meta]").forEach((b) => (b.onclick = () => formMeta(D.metas.find((m) => m.id === b.dataset.meta))));
+  const aporte = (sinal) => (b) => (b.onclick = async () => {
+    const m = D.metas.find((x) => x.id === (b.dataset.aporte ?? b.dataset.resgate));
+    const s = prompt(`${sinal > 0 ? "Quanto você guardou" : "Quanto você retirou"} para "${m.nome}"? (R$)`);
+    if (!s) return;
+    const val = parseBR(s);
+    if (!(val > 0)) return toast("Valor inválido");
+    try { await api("POST", `/api/fin/metas/${m.id}/aporte`, { valor: sinal * val }); toast("Meta atualizada ✓"); carregar(); } catch (e) { toast(e.message); }
+  });
+  $$("[data-aporte]").forEach(aporte(1));
+  $$("[data-resgate]").forEach(aporte(-1));
+}
+
+function formMeta(m) {
+  abrirDlg(m ? "Editar meta" : "Nova meta", `
+    <form id="fm" class="form">
+      <div class="field full"><label for="m-nome">Nome</label><input id="m-nome" type="text" required placeholder="Ex.: Reserva de emergência" value="${esc(m?.nome ?? "")}"></div>
+      <div class="field"><label for="m-alvo">Quanto quer juntar (R$)</label><input id="m-alvo" type="text" inputmode="decimal" required value="${valorInput(m?.alvo)}"></div>
+      <div class="field"><label for="m-prazo">Prazo (opcional)</label><input id="m-prazo" type="date" value="${m?.prazo ?? ""}"></div>
+      ${m ? "" : `<div class="field full"><label for="m-ja">Já tem guardado (R$, opcional)</label><input id="m-ja" type="text" inputmode="decimal"></div>`}
+      <div class="form-erro full" id="m-erro"></div>
+      <div class="dlg-foot full">${m ? `<button type="button" class="perigo" id="m-del" style="margin-right:auto">Apagar</button>` : ""}<button type="button" onclick="fecharDlg()">Cancelar</button><button class="primary" type="submit">Salvar</button></div>
+    </form>`);
+  $("#fm").onsubmit = async (e) => {
+    e.preventDefault();
+    const body = { nome: $("#m-nome").value, alvo: parseBR($("#m-alvo").value), prazo: $("#m-prazo").value || undefined, ja_guardado: m ? undefined : parseBR($("#m-ja").value || "0") };
+    try { m ? await api("PUT", `/api/fin/metas/${m.id}`, body) : await api("POST", "/api/fin/metas", body); fecharDlg(); toast("Meta salva ✓"); carregar(); } catch (err) { $("#m-erro").textContent = err.message; }
+  };
+  if (m) $("#m-del").onclick = async () => { if (!confirm(`Apagar a meta "${m.nome}"?`)) return; await api("DELETE", `/api/fin/metas/${m.id}`, {}); fecharDlg(); toast("Meta apagada"); carregar(); };
+}
+
+// ============ Ajustes ============
+async function telaAjustes() {
+  $("#app").innerHTML = `
+    <section class="grid2">
+      <div class="stack">
+        <div class="card">
+          <div class="card-head"><div><h2>Contas e carteiras</h2><div class="sub">Onde seu dinheiro está. O saldo atual é calculado a partir do saldo inicial + lançamentos pagos.</div></div><button class="primary sm" id="nova-conta">+ Nova conta</button></div>
+          <ul class="list">${D.contas.map((c) => `<li><span class="n">${esc(c.nome)}${c.arquivada ? `<span class="pill">arquivada</span>` : ""}<small>${TIPO_CONTA[c.tipo]} · saldo inicial <span class="val">${brl(c.saldo_inicial)}</span></small></span>
+            <span class="direita"><span class="num val">${brl(c.saldo)}</span><button class="ghost sm" data-conta="${c.id}">Editar</button></span></li>`).join("")}</ul>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h2>Importar extrato</h2><div class="sub">Baixe o extrato no app ou site do banco em <strong>OFX</strong> (recomendado) ou <strong>CSV</strong> e importe aqui. Repetidos são ignorados.</div></div></div>
+          <div class="form">
+            <div class="field"><label for="imp-conta">Conta do extrato</label><select id="imp-conta">${contasAtivas().map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("")}</select></div>
+            <div class="field"><label for="imp-arq">Arquivo</label><input id="imp-arq" type="file" accept=".ofx,.qfx,.csv,.txt"></div>
+          </div>
+          <div class="form-erro" id="imp-erro" style="margin-top:8px"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h2>Categorias</h2><div class="sub">Renomeie, crie ou apague (só se não tiver lançamentos).</div></div><button class="primary sm" id="nova-cat">+ Nova</button></div>
+          ${["despesa", "receita"].map((t) => `<div class="lbl" style="margin:8px 0 2px">${t === "despesa" ? "Despesas" : "Receitas"}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${catsDe(t).map((c) => `<button class="sm" data-cat="${c.id}">${esc(c.nome)}</button>`).join("")}</div>`).join("")}
+        </div>
+      </div>
+      <div class="stack">
+        ${APP ? `<div class="card" id="card-app"><h2>Este aparelho</h2><div class="sub">Carregando…</div></div>` : REMOTO ? `<div class="card"><h2>Este celular</h2><p class="sub" style="margin:4px 0 10px">Você está usando o Meu Banco pelo celular. Os dados ficam no computador; ele precisa estar ligado com o app aberto.</p>
+          <button class="perigo" id="sair">Sair deste aparelho</button></div>` : `<div class="card" id="card-cel"><h2>Acesso pelo celular</h2><div class="sub">Carregando…</div></div>`}
+        <div class="card">
+          <h2>Backup</h2>
+          <p class="sub" style="margin:4px 0 10px">${APP ? "Seus dados ficam só neste aparelho. Se ele for perdido, trocado ou formatado, só o backup salva seus dados — guarde-o no Drive, iCloud ou e-mail." : `Seus dados ficam só neste computador, em <code>${esc(D.arquivo)}</code>. Faça backup de vez em quando.`}</p>
+          <div class="controls"><a href="/api/fin/backup"><button>Baixar backup</button></a><a href="/api/fin/exportar.csv"><button>Exportar planilha (CSV)</button></a><label><button type="button" onclick="$('#rest').click()">Restaurar backup…</button><input id="rest" type="file" accept=".json" hidden></label></div>
+        </div>
+        ${REMOTO || APP ? "" : `<div class="card">
+          <h2>Usar no Claude</h2>
+          <p class="sub" style="margin:4px 0 8px">Registre gastos e peça análises conversando: <em>"gastei 32 no ifood"</em>, <em>"como estou no orçamento?"</em>, <em>"quais contas vencem essa semana?"</em>.</p>
+          <div id="mcp-info" class="nota">Carregando…</div>
+        </div>
+        <div class="card">
+          <h2>Bancos via Open Finance</h2>
+          <p class="sub" style="margin:4px 0 8px">Opcional: conecte bancos pela Pluggy para ver saldos e transações automaticamente.</p>
+          <a href="/bancos">Abrir painel de bancos →</a>
+        </div>`}
+      </div>
+    </section>`;
+  $("#nova-conta").onclick = () => formConta();
+  $$("[data-conta]").forEach((b) => (b.onclick = () => formConta(D.contas.find((c) => c.id === b.dataset.conta))));
+  $("#nova-cat").onclick = () => formCategoria();
+  $$("[data-cat]").forEach((b) => (b.onclick = () => formCategoria(D.lista_categorias.find((c) => c.id === b.dataset.cat))));
+  $("#imp-arq").onchange = importar;
+  $("#rest").onchange = restaurar;
+  if (APP) { cartaoApp(); return; }
+  if (REMOTO) {
+    $("#sair").onclick = async () => { if (!confirm("Sair deste aparelho? Para voltar, use o PIN ou o QR code.")) return; await api("POST", "/api/sair", {}); location.href = "/entrar"; };
+    return;
+  }
+  cartaoCelular();
+  try {
+    const e = await api("GET", "/api/estado");
+    $("#mcp-info").innerHTML = `<div><strong>Claude Code</strong> — rode no terminal:</div><pre class="code" id="cmd">${esc(e.mcp.comando_claude_code)}</pre>
+      <button class="sm" data-copiar="cmd">Copiar</button>
+      <div style="margin-top:10px"><strong>Claude Desktop</strong> — Configurações → Desenvolvedor → Editar configuração:</div><pre class="code" id="cjson">${esc(JSON.stringify(e.mcp.json, null, 2))}</pre>
+      <button class="sm" data-copiar="cjson">Copiar</button>`;
+    $$("[data-copiar]").forEach((b) => (b.onclick = async () => { try { await navigator.clipboard.writeText($("#" + b.dataset.copiar).textContent); toast("Copiado ✓"); } catch { toast("Selecione o texto e copie manualmente."); } }));
+  } catch { $("#mcp-info").textContent = "Indisponível."; }
+}
+
+// ============ App independente: este aparelho ============
+async function cartaoApp() {
+  const el = $("#card-app");
+  if (!el) return;
+  const L = window.MeuBancoLocal;
+  const i = await L.infoAparelho();
+  const diasBackup = i.ultimo_backup ? Math.round((Date.parse(HOJE) - Date.parse(i.ultimo_backup)) / 864e5) : null;
+  el.innerHTML = `<h2>Este aparelho</h2>
+    <p class="sub" style="margin:4px 0 12px">O Meu Banco funciona sozinho aqui, até sem internet. Nada é enviado para servidor nenhum — cada aparelho tem os seus próprios dados.</p>
+    ${!i.instalado ? `<div class="alerta atencao" style="margin-bottom:10px"><span class="ic">!</span><span><strong>Instale na tela inicial</strong> para abrir como app${i.ios ? " e para o iPhone não apagar os dados de sites pouco usados" : ""}:<br>${i.ios ? "Safari → botão <strong>Compartilhar</strong> → <strong>Adicionar à Tela de Início</strong>" : "Chrome → <strong>⋮</strong> → <strong>Instalar app</strong> (ou Adicionar à tela inicial)"}</span></div>` : ""}
+    ${diasBackup === null || diasBackup > 30 ? `<div class="alerta ${diasBackup === null ? "atencao" : "critico"}" style="margin-bottom:10px"><span class="ic">!</span><span>${diasBackup === null ? "Você ainda não fez nenhum backup." : `Último backup há ${diasBackup} dias.`} Use <strong>Baixar backup</strong> abaixo e salve no Drive, iCloud ou e-mail.</span></div>` : `<p class="nota" style="margin:0 0 10px">✓ Último backup: ${dataBR(i.ultimo_backup)}</p>`}
+    <div class="lbl" style="margin:6px 0 4px">Bloqueio com PIN</div>
+    ${i.pin ? `<p class="sub" style="margin:0 0 8px"><span class="status-on">Ativado</span> · dados criptografados · bloqueia sozinho após 1 min fora do app</p>
+      <div class="controls"><button class="sm" id="app-bloq">Bloquear agora</button><button class="sm" id="app-trocar">Trocar PIN</button><button class="sm perigo" id="app-tirar">Remover PIN</button></div>`
+    : `<form id="f-app-pin" class="form" autocomplete="off">
+        <div class="field"><label for="ap1">PIN de 6 números</label><input id="ap1" class="pin-in" type="password" inputmode="numeric" maxlength="6" required autocomplete="new-password"></div>
+        <div class="field"><label for="ap2">Repita o PIN</label><input id="ap2" class="pin-in" type="password" inputmode="numeric" maxlength="6" required autocomplete="new-password"></div>
+        <p class="nota full" style="margin:0">Os dados ficam criptografados com o PIN. <strong>Se esquecer o PIN, não há como recuperar</strong> — só restaurando um backup.</p>
+        <div class="form-erro full" id="ap-erro"></div>
+        <div class="full"><button class="primary" type="submit">Ativar PIN</button></div>
+      </form>`}
+    <div class="lbl" style="margin:16px 0 4px">Zona de perigo</div>
+    <button class="sm perigo" id="app-apagar">Apagar todos os dados deste aparelho</button>`;
+  const pedirPin = (msg) => { const p = prompt(msg); return p === null ? null : p.trim(); };
+  if (i.pin) {
+    $("#app-bloq").onclick = () => L.bloquear();
+    $("#app-trocar").onclick = async () => {
+      const p1 = pedirPin("Novo PIN (6 números):"); if (!p1) return;
+      if (pedirPin("Repita o novo PIN:") !== p1) return toast("Os PINs não são iguais.");
+      try { await L.definirPin(p1); toast("PIN trocado ✓"); } catch (e) { toast(e.message); }
+    };
+    $("#app-tirar").onclick = async () => {
+      const p = pedirPin("Digite o PIN atual para remover o bloqueio:"); if (!p) return;
+      try { await L.removerPin(p); toast("PIN removido. Os dados não estão mais criptografados."); cartaoApp(); } catch (e) { toast(e.message); }
+    };
+  } else {
+    $("#f-app-pin").onsubmit = async (e) => {
+      e.preventDefault();
+      if ($("#ap1").value !== $("#ap2").value) return ($("#ap-erro").textContent = "Os dois PINs não são iguais.");
+      try { await L.definirPin($("#ap1").value); toast("PIN ativado ✓ — os dados agora estão criptografados."); cartaoApp(); }
+      catch (err) { $("#ap-erro").textContent = err.message; }
+    };
+  }
+  $("#app-apagar").onclick = async () => {
+    if (!confirm("Apagar TODOS os dados deste aparelho?\n\nIsso não pode ser desfeito. Faça um backup antes, se quiser guardar.")) return;
+    if (prompt('Para confirmar, digite APAGAR') !== "APAGAR") return toast("Nada foi apagado.");
+    await L.apagarTudo();
+  };
+}
+
+// ============ Acesso pelo celular (só no computador) ============
+let qrTimer;
+async function cartaoCelular(acao) {
+  const el = $("#card-cel");
+  if (!el) return;
+  let c;
+  try { c = await api(acao ? "POST" : "GET", "/api/celular", acao); }
+  catch (e) { toast(e.message); c = await api("GET", "/api/celular"); }
+  clearTimeout(qrTimer);
+  if (!c.ativo || !c.pin_definido) {
+    el.innerHTML = `<h2>Acesso pelo celular</h2>
+      <p class="sub" style="margin:4px 0 12px">Use o Meu Banco no celular, conectado ao <strong>mesmo Wi-Fi</strong> deste computador. Os dados continuam aqui; o celular só acessa — com PIN.</p>
+      <form id="f-pin" class="form" autocomplete="off">
+        ${c.pin_definido ? `<p class="nota full" style="margin:0">PIN já criado. Ative abaixo ou crie um novo.</p>` : ""}
+        <div class="field"><label for="pin1">${c.pin_definido ? "Novo PIN (opcional)" : "Crie um PIN de 6 números"}</label><input id="pin1" class="pin-in" type="password" inputmode="numeric" maxlength="6" pattern="\\d{6}" ${c.pin_definido ? "" : "required"} autocomplete="new-password"></div>
+        <div class="field"><label for="pin2">Repita o PIN</label><input id="pin2" class="pin-in" type="password" inputmode="numeric" maxlength="6" ${c.pin_definido ? "" : "required"} autocomplete="new-password"></div>
+        <div class="form-erro full" id="pin-erro"></div>
+        <div class="full"><button class="primary" type="submit">Ativar acesso pelo celular</button></div>
+      </form>`;
+    $("#f-pin").onsubmit = async (e) => {
+      e.preventDefault();
+      const p1 = $("#pin1").value, p2 = $("#pin2").value;
+      if (p1 || !c.pin_definido) {
+        if (!/^\d{6}$/.test(p1)) return ($("#pin-erro").textContent = "O PIN precisa ter 6 números.");
+        if (p1 !== p2) return ($("#pin-erro").textContent = "Os dois PINs não são iguais.");
+      }
+      try { await api("POST", "/api/celular", { ...(p1 ? { pin: p1 } : {}), ativo: true }); toast("Acesso pelo celular ativado ✓"); cartaoCelular(); }
+      catch (err) { $("#pin-erro").textContent = err.message; }
+    };
+    return;
+  }
+  const wifi = c.enderecos.filter((x) => x.tipo !== "tailscale"), ts = c.enderecos.filter((x) => x.tipo === "tailscale");
+  el.innerHTML = `<div class="card-head"><div><h2>Acesso pelo celular</h2>${c.rodando ? `<span class="status-on">Ligado · porta ${c.porta}</span>` : ""}</div>
+      <button class="sm" id="cel-off">Desativar</button></div>
+    ${c.erro ? `<div class="alerta critico" style="margin-bottom:10px"><span class="ic">!</span><span>${esc(c.erro)}</span></div>` : ""}
+    ${!c.enderecos.length ? `<div class="alerta atencao"><span class="ic">!</span><span>Este computador não parece estar conectado a uma rede Wi-Fi ou cabo.</span></div>` : `
+    <div class="cel">
+      <div>${c.qr_svg ? `<div class="qr" role="img" aria-label="QR code para abrir no celular">${c.qr_svg}</div><div class="nota" style="text-align:center;margin-top:6px">Vale por 10 min, uma vez · <a href="#" id="novo-qr">gerar outro</a></div>` : ""}</div>
+      <div>
+        <ol>
+          <li>Conecte o celular no <strong>mesmo Wi-Fi</strong> deste computador.</li>
+          <li>Abra a <strong>câmera</strong> do celular e aponte para o QR code. Toque no link que aparecer.</li>
+          <li>Pronto! Para virar um app: no iPhone, <em>Compartilhar → Adicionar à Tela de Início</em>; no Android, <em>⋮ → Adicionar à tela inicial</em>.</li>
+        </ol>
+        <p class="nota" style="margin:10px 0 0">Ou digite no navegador do celular ${wifi.map((x) => `<strong>${esc(x.url)}</strong>`).join(" ou ")} e entre com o PIN.</p>
+        ${ts.length ? `<p class="nota" style="margin:6px 0 0">Fora de casa (Tailscale): <strong>${ts.map((x) => esc(x.url)).join(", ")}</strong></p>` : ""}
+      </div>
+    </div>`}
+    <div class="lbl" style="margin:14px 0 2px">Aparelhos conectados</div>
+    <ul class="list">${c.sessoes.map((s) => `<li><span class="n">${esc(s.aparelho)}<small>desde ${dataBR(s.criada.slice(0, 10))} · último uso ${dataBR(s.ultimo_uso.slice(0, 10))}</small></span><button class="ghost sm perigo" data-desc="${s.id}">Desconectar</button></li>`).join("") || `<li class="empty">Nenhum ainda.</li>`}</ul>
+    <div class="controls" style="margin-top:8px">${c.sessoes.length > 1 ? `<button class="sm perigo" id="cel-todos">Desconectar todos</button>` : ""}<button class="sm" id="cel-pin">Trocar PIN</button></div>
+    <details style="margin-top:12px"><summary class="nota" style="cursor:pointer">Não abriu? Dicas e segurança</summary>
+      <ul class="nota" style="padding-left:18px;line-height:1.7">
+        <li>Na primeira vez, o Windows ou o Mac pode perguntar se o <strong>Node.js</strong> pode usar a rede: clique em <strong>Permitir</strong> (redes privadas).</li>
+        <li>O computador precisa estar ligado com o Meu Banco aberto.</li>
+        <li>Use só no Wi-Fi de casa ou do trabalho. <strong>Não ative em Wi-Fi público</strong> (aeroporto, café): a conexão na rede local não é criptografada.</li>
+        <li>Para usar fora de casa com segurança, instale o <a href="https://tailscale.com/download" target="_blank" rel="noopener">Tailscale</a> (grátis) no computador e no celular, com a mesma conta. O endereço "Tailscale" aparece aqui automaticamente.</li>
+        <li>Perdeu o celular? Clique em <strong>Desconectar</strong> nele aqui.</li>
+      </ul></details>`;
+  $("#cel-off").onclick = () => cartaoCelular({ ativo: false });
+  $("#novo-qr")?.addEventListener("click", (e) => { e.preventDefault(); cartaoCelular(); });
+  $("#cel-todos")?.addEventListener("click", () => confirm("Desconectar todos os aparelhos?") && cartaoCelular({ encerrar_sessoes: true }));
+  $("#cel-pin").onclick = () => {
+    const p1 = prompt("Novo PIN (6 números):"); if (!p1) return;
+    const p2 = prompt("Repita o novo PIN:"); if (p1 !== p2) return toast("Os PINs não são iguais.");
+    cartaoCelular({ pin: p1 }).then(() => toast("PIN trocado ✓ — aparelhos já conectados continuam conectados."));
+  };
+  $$("[data-desc]", el).forEach((b) => (b.onclick = () => cartaoCelular({ remover_sessao: b.dataset.desc })));
+  // o QR expira em 10 min: renova sozinho enquanto a tela estiver aberta
+  if (c.qr_svg) qrTimer = setTimeout(() => aba() === "ajustes" && cartaoCelular(), 9 * 60e3);
+}
+
+function formConta(c) {
+  abrirDlg(c ? "Editar conta" : "Nova conta", `
+    <form id="fc" class="form">
+      <div class="field full"><label for="c-nome">Nome</label><input id="c-nome" type="text" required placeholder="Ex.: Nubank, Itaú, Carteira" value="${esc(c?.nome ?? "")}"></div>
+      <div class="field"><label for="c-tipo">Tipo</label><select id="c-tipo">${Object.entries(TIPO_CONTA).map(([k, n]) => `<option value="${k}">${n}</option>`).join("")}</select></div>
+      <div class="field"><label for="c-saldo">Saldo inicial (R$)</label><input id="c-saldo" type="text" inputmode="decimal" value="${valorInput(c?.saldo_inicial ?? 0)}"></div>
+      <p class="nota full" style="margin:0">Dica: para uma conta nova no app, informe o saldo de hoje. Em cartão de crédito, use 0 — as compras deixam o saldo negativo (o que você deve) e o pagamento da fatura é uma transferência da conta corrente para o cartão.</p>
+      ${c ? `<label class="check full"><input type="checkbox" id="c-arq" ${c.arquivada ? "checked" : ""}> Arquivada (some das listas, mantém o histórico)</label>` : ""}
+      <div class="form-erro full" id="c-erro"></div>
+      <div class="dlg-foot full">${c ? `<button type="button" class="perigo" id="c-del" style="margin-right:auto">Apagar</button>` : ""}<button type="button" onclick="fecharDlg()">Cancelar</button><button class="primary" type="submit">Salvar</button></div>
+    </form>`);
+  if (c) $("#c-tipo").value = c.tipo;
+  $("#fc").onsubmit = async (e) => {
+    e.preventDefault();
+    const body = { nome: $("#c-nome").value, tipo: $("#c-tipo").value, saldo_inicial: parseBR($("#c-saldo").value || "0"), arquivada: c ? $("#c-arq").checked : false };
+    try { c ? await api("PUT", `/api/fin/contas/${c.id}`, body) : await api("POST", "/api/fin/contas", body); fecharDlg(); toast("Conta salva ✓"); carregar(); } catch (err) { $("#c-erro").textContent = err.message; }
+  };
+  if (c) $("#c-del").onclick = async () => { if (!confirm(`Apagar a conta "${c.nome}"?`)) return; try { await api("DELETE", `/api/fin/contas/${c.id}`, {}); fecharDlg(); toast("Conta apagada"); carregar(); } catch (err) { $("#c-erro").textContent = err.message; } };
+}
+
+function formCategoria(c) {
+  abrirDlg(c ? "Editar categoria" : "Nova categoria", `
+    <form id="fcat" class="form">
+      <div class="field full"><label for="k-nome">Nome</label><input id="k-nome" type="text" required maxlength="40" value="${esc(c?.nome ?? "")}"></div>
+      ${c ? "" : `<div class="field full"><label for="k-tipo">Tipo</label><select id="k-tipo"><option value="despesa">Despesa</option><option value="receita">Receita</option></select></div>`}
+      <div class="form-erro full" id="k-erro"></div>
+      <div class="dlg-foot full">${c ? `<button type="button" class="perigo" id="k-del" style="margin-right:auto">Apagar</button>` : ""}<button type="button" onclick="fecharDlg()">Cancelar</button><button class="primary" type="submit">Salvar</button></div>
+    </form>`);
+  $("#fcat").onsubmit = async (e) => {
+    e.preventDefault();
+    try {
+      c ? await api("PUT", `/api/fin/categorias/${c.id}`, { nome: $("#k-nome").value, tipo: c.tipo, orcamento: c.orcamento ?? null }) : await api("POST", "/api/fin/categorias", { nome: $("#k-nome").value, tipo: $("#k-tipo").value });
+      fecharDlg(); toast("Categoria salva ✓"); carregar();
+    } catch (err) { $("#k-erro").textContent = err.message; }
+  };
+  if (c) $("#k-del").onclick = async () => { try { await api("DELETE", `/api/fin/categorias/${c.id}`, {}); fecharDlg(); toast("Categoria apagada"); carregar(); } catch (err) { $("#k-erro").textContent = err.message; } };
+}
+
+// Lê o arquivo respeitando a codificação (muitos OFX de bancos brasileiros vêm em Windows-1252)
+async function lerArquivo(file) {
+  const buf = await file.arrayBuffer();
+  try { return new TextDecoder("utf-8", { fatal: true }).decode(buf); } catch { return new TextDecoder("windows-1252").decode(buf); }
+}
+
+let importacao = null;
+async function importar() {
+  const file = $("#imp-arq").files[0];
+  if (!file) return;
+  $("#imp-erro").textContent = "Lendo arquivo…";
+  try {
+    const conteudo = await lerArquivo(file);
+    importacao = { nome: file.name, conteudo, conta_id: $("#imp-conta").value };
+    await previa();
+    $("#imp-erro").textContent = "";
+  } catch (e) { $("#imp-erro").textContent = e.message; }
+  $("#imp-arq").value = "";
+}
+
+async function previa(inverter) {
+  const p = await api("POST", "/api/fin/importar/previa", { ...importacao, inverter });
+  importacao.itens = p.itens;
+  const novos = p.itens.filter((i) => !i.duplicado).length;
+  const opc = (t) => catsDe(t).map((c) => `<option value="${c.id}">${esc(c.nome)}</option>`).join("");
+  abrirDlg(`Importar ${p.formato} — ${p.itens.length} transações`, `
+    <p class="sub" style="margin-top:0">Para a conta <strong>${esc(nomeConta(importacao.conta_id))}</strong>. Confira as categorias sugeridas e desmarque o que não quiser importar.
+      ${p.itens.length - novos ? `<br>${p.itens.length - novos} já existe(m) e veio(vieram) desmarcada(s).` : ""}</p>
+    <label class="check"><input type="checkbox" id="imp-inv" ${p.invertido ? "checked" : ""}> Inverter entradas e saídas (marque se as compras aparecerem como receita)</label>
+    <div class="table-wrap" style="max-height:52vh;overflow:auto;margin-top:8px"><table>
+      <thead><tr><th><input type="checkbox" id="imp-todos" checked aria-label="Marcar todos"></th><th>Data</th><th>Descrição</th><th>Categoria</th><th class="r">Valor</th></tr></thead>
+      <tbody>${p.itens.map((i, k) => `<tr><td><input type="checkbox" data-i="${k}" ${i.duplicado ? "" : "checked"}></td><td class="num">${dataBR(i.data).slice(0, 5)}</td>
+        <td>${esc(i.descricao)}${i.duplicado ? `<span class="pill">já existe</span>` : ""}</td>
+        <td><select data-c="${k}" style="max-width:180px">${opc(i.tipo)}</select></td>
+        <td class="r num ${i.tipo === "receita" ? "pos" : ""}">${i.tipo === "receita" ? "+" : "−"}${brl(i.valor)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="form-erro" id="imp-e2"></div>
+    <div class="dlg-foot"><button onclick="fecharDlg()">Cancelar</button><button class="primary" id="imp-ok">Importar selecionados</button></div>`, true);
+  p.itens.forEach((i, k) => { if (i.categoria_id) $(`[data-c="${k}"]`).value = i.categoria_id; });
+  $("#imp-inv").onchange = () => previa($("#imp-inv").checked).catch((e) => ($("#imp-e2").textContent = e.message));
+  $("#imp-todos").onchange = (e) => $$("[data-i]").forEach((c) => (c.checked = e.target.checked));
+  $("#imp-ok").onclick = async () => {
+    const itens = $$("[data-i]").filter((c) => c.checked).map((c) => ({ ...importacao.itens[c.dataset.i], categoria_id: $(`[data-c="${c.dataset.i}"]`).value }));
+    if (!itens.length) return ($("#imp-e2").textContent = "Nenhum item selecionado.");
+    try {
+      const r = await api("POST", "/api/fin/importar", { conta_id: importacao.conta_id, itens });
+      fecharDlg(); toast(`${r.importados} lançamento(s) importado(s) ✓`);
+      const meses = [...new Set(itens.map((i) => i.data.slice(0, 7)))].sort();
+      if (!meses.includes(mes)) { mes = meses.at(-1); if (![...$("#mes").options].some((o) => o.value === mes)) $("#mes").add(new Option(nomeMes(mes, true), mes), 0); $("#mes").value = mes; }
+      location.hash = "#lancamentos"; carregar();
+    } catch (e) { $("#imp-e2").textContent = e.message; }
+  };
+}
+
+async function restaurar() {
+  const f = $("#rest").files[0];
+  if (!f) return;
+  try {
+    const backup = JSON.parse(await f.text());
+    if (!confirm(`Restaurar o backup "${f.name}"?\n\nIsso SUBSTITUI todos os dados atuais (${D.contas.length} contas). Recomendo baixar um backup antes.`)) return;
+    const r = await api("POST", "/api/fin/restaurar", { backup });
+    toast(`Backup restaurado: ${r.lancamentos} lançamentos ✓`); carregar();
+  } catch (e) { toast("Não deu para restaurar: " + e.message); }
+  $("#rest").value = "";
+}
+
+let rt;
+addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => D && aba() === "visao" && graficoFluxo($("#fluxo"), D.fluxo), 120); });
+carregar();
+</script>
+</body>
+</html>
