@@ -10,6 +10,8 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
+  // A página da Nexora (pasta nexora/) não faz parte do app: deixa o navegador buscar direto.
+  if (new URL(req.url).pathname.includes("/nexora/")) return;
   // Abre na hora com o que está guardado; atualiza em segundo plano quando houver internet.
   e.respondWith(caches.open(CACHE).then(async (c) => {
     const chave = req.mode === "navigate" ? "index.html" : req;

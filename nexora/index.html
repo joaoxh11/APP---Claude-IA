@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexora | Tráfego pago para a sua empresa ser vista</title>
+<meta name="description" content="A Nexora coloca a sua empresa na frente de quem está pronto para comprar. Tráfego pago em Meta Ads, Google Ads e TikTok Ads, com cada real investido sendo medido.">
+<meta name="theme-color" content="#0A0E1A">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Nexora">
+<meta property="og:title" content="Nexora | Tráfego pago para a sua empresa ser vista">
+<meta property="og:description" content="Quem não é visto não é lembrado. Coloque a sua empresa na frente de quem está pronto para comprar.">
+<meta property="og:image" content="https://joaoxh11.github.io/APP---Claude-IA/nexora/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='22' fill='%230A0E1A'/%3E%3Cpath d='M28 76V28l44 48V48' fill='none' stroke='%23fff' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='72' cy='27' r='7.5' fill='%232B50FF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Outfit:wght@400;500;600&display=swap">
+<style>
+/* Layout: faixas alternadas Noite / Marfim, coluna única de 1120px, o ponto azul do logo como fio condutor. */
+:root{
+  --noite:#0A0E1A;
+  --noite-2:#121829;
+  --azul:#2B50FF;
+  --azul-escuro:#1F3EDB;
+  --nevoa:#A9BCFF;
+  --marfim:#F4F2EC;
+  --papel:#FBFAF6;
+  --grafite:#8A8F9C;
+  --grafite-escuro:#565B68;
+  --pulso:#C8FF4D;
+  --linha-clara:rgba(10,14,26,.12);
+  --linha-escura:rgba(169,188,255,.18);
+  --display:"Outfit","Segoe UI",system-ui,sans-serif;
+  --texto:"Manrope","Segoe UI",system-ui,sans-serif;
+  --raio:14px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--noite);color:var(--noite);font-family:var(--texto);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+:focus-visible{outline:3px solid var(--pulso);outline-offset:3px;border-radius:6px}
+
+.faixa{padding-block:clamp(64px,9vw,112px)}
+.dentro{max-width:1120px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.escura{background:var(--noite);color:#fff}
+.clara{background:var(--marfim)}
+.papel{background:var(--papel)}
+
+.rotulo{font-family:var(--texto);font-size:.76rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--azul);display:flex;align-items:center;gap:10px}
+.rotulo::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
+.escura .rotulo{color:var(--nevoa)}
+.titulo{font-size:clamp(2rem,4.6vw,3.25rem);margin-top:18px;max-width:20ch}
+.apoio{margin-top:20px;max-width:58ch;color:var(--grafite-escuro);font-size:1.06rem}
+.escura .apoio{color:var(--nevoa)}
+.azul{color:var(--azul)}
+.escura .azul{color:#6F8BFF}
+
+/* Botões */
+.botao{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--azul);color:#fff;font-family:var(--texto);font-weight:700;font-size:1rem;text-decoration:none;padding:16px 26px;border-radius:999px;transition:background .2s,transform .2s}
+.botao:hover{background:var(--azul-escuro);transform:translateY(-1px)}
+.botao svg{width:20px;height:20px;flex:none}
+.botao.pequeno{padding:11px 18px;font-size:.92rem}
+.elo{font-weight:600;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--linha-escura)}
+.elo:hover{text-decoration-color:currentColor}
+
+/* Topo */
+.topo{position:sticky;top:0;z-index:20;background:rgba(10,14,26,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--linha-escura);color:#fff}
+.topo .dentro{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca svg{width:30px;height:30px}
+.marca span{font-family:var(--display);font-weight:500;letter-spacing:.3em;font-size:1.02rem}
+
+/* Hero */
+.hero{padding-block:clamp(48px,7vw,96px) clamp(64px,8vw,104px);overflow:hidden}
+.hero .dentro{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(32px,5vw,72px);align-items:center}
+.hero h1{font-size:clamp(2.5rem,6.2vw,4.5rem);margin-top:22px}
+.hero .apoio{font-size:1.14rem;max-width:46ch}
+.acoes{display:flex;flex-wrap:wrap;align-items:center;gap:18px 26px;margin-top:34px}
+.plataformas{margin-top:44px;padding-top:22px;border-top:1px solid var(--linha-escura);display:flex;flex-wrap:wrap;gap:8px 26px;font-size:.9rem;color:var(--nevoa)}
+.plataformas strong{color:#fff;font-weight:600}
+.grafico{background:var(--noite-2);border:1px solid var(--linha-escura);border-radius:22px;padding:clamp(14px,2.4vw,26px)}
+.grafico text{font-family:var(--texto)}
+.traco{stroke-dasharray:640;stroke-dashoffset:640;animation:desenha 1.8s .2s cubic-bezier(.6,0,.2,1) forwards}
+.halo{transform-origin:462px 62px;animation:pulsa 2.6s 2s ease-out infinite}
+@keyframes desenha{to{stroke-dashoffset:0}}
+@keyframes pulsa{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.6);opacity:0}}
+
+/* Grades */
+.grade{display:grid;gap:18px;margin-top:48px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cartao{background:var(--papel);border:1px solid var(--linha-clara);border-radius:var(--raio);padding:26px}
+.papel .cartao{background:var(--marfim)}
+.cartao h3{font-size:1.28rem;letter-spacing:-.01em}
+.cartao p{margin-top:10px;color:var(--grafite-escuro);font-size:.98rem}
+.escura .cartao{background:var(--noite-2);border-color:var(--linha-escura)}
+.escura .cartao p{color:var(--nevoa)}
+.onde{font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grafite);margin-bottom:14px}
+
+/* Três ganchos */
+.ganchos{margin-top:52px;border-top:1px solid var(--linha-escura)}
+.gancho{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:12px 40px;padding-block:30px;border-bottom:1px solid var(--linha-escura);align-items:baseline}
+.gancho h3{font-size:clamp(1.6rem,3.2vw,2.3rem)}
+.gancho p{color:var(--nevoa)}
+
+/* Lista do que está incluído */
+.itens{margin-top:48px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px;border-top:1px solid var(--linha-clara)}
+.item{padding-block:24px;border-bottom:1px solid var(--linha-clara)}
+.item h3{font-size:1.2rem;display:flex;gap:12px;align-items:baseline}
+.item h3::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--azul);flex:none;transform:translateY(-2px)}
+.item p{margin-top:8px;color:var(--grafite-escuro);font-size:.98rem;padding-left:20px}
+
+/* Etapas */
+.etapas{counter-reset:etapa;margin-top:52px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.etapa{counter-increment:etapa;border-top:2px solid var(--noite);padding-top:20px}
+.etapa::before{content:counter(etapa);font-family:var(--display);font-size:2.6rem;font-weight:500;line-height:1;color:var(--azul)}
+.etapa h3{font-size:1.25rem;margin-top:14px}
+.etapa p{margin-top:8px;color:var(--grafite-escuro);font-size:.96rem}
+
+/* Números */
+.numeros{margin-top:48px;border-top:1px solid var(--linha-escura)}
+.numero{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px 28px;align-items:baseline;padding-block:20px;border-bottom:1px solid var(--linha-escura)}
+.numero dt{font-family:var(--display);font-size:1.7rem;font-weight:500;letter-spacing:.02em}
+.numero dd{margin:0;color:var(--nevoa)}
+.numero dd strong{color:#fff;font-weight:600}
+
+/* Chamada final */
+.final{text-align:left;position:relative;overflow:hidden}
+.final h2{font-size:clamp(2.2rem,5.4vw,4rem);max-width:17ch;margin-top:18px}
+.contato{margin-top:36px;display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px}
+.telefone{font-family:var(--display);font-size:1.3rem;letter-spacing:.02em;color:#fff;user-select:all}
+.telefone small{display:block;font-family:var(--texto);font-size:.74rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--nevoa)}
+
+.rodape{background:var(--noite);color:var(--grafite);border-top:1px solid var(--linha-escura);font-size:.86rem}
+.rodape .dentro{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:26px calc(26px + env(safe-area-inset-bottom,0px))}
+.rodape b{color:#fff;font-family:var(--display);font-weight:500;letter-spacing:.28em}
+
+/* Botão flutuante (celular) */
+.flutuante{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;width:58px;height:58px;border-radius:50%;background:var(--azul);color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(10,14,26,.4)}
+.flutuante svg{width:28px;height:28px}
+
+@media (max-width:900px){
+  .hero .dentro{grid-template-columns:minmax(0,1fr)}
+  .g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .etapas{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .g2,.g3,.g4,.itens,.etapas{grid-template-columns:minmax(0,1fr)}
+  .gancho{grid-template-columns:minmax(0,1fr)}
+  .numero{grid-template-columns:76px minmax(0,1fr);gap:8px 16px}
+  .numero dt{font-size:1.35rem}
+  .topo .botao span{display:none}
+  .topo .botao{padding:11px 14px}
+  .acoes .botao{width:100%}
+  .flutuante{display:flex}
+  .rodape .dentro{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .traco{animation:none;stroke-dashoffset:0}
+  .halo{animation:none;opacity:0}
+  .botao{transition:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="zap" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.2-.32a8.2 8.2 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24ZM8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01Z"/></symbol>
+  <symbol id="simbolo" viewBox="0 0 100 100"><path d="M24 80V22l52 58V46" fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="76" cy="22" r="8.5" fill="#2B50FF"/></symbol>
+</svg>
+
+<header class="topo">
+  <div class="dentro">
+    <a class="marca" href="#inicio" aria-label="Nexora, início">
+      <svg aria-hidden="true"><use href="#simbolo"/></svg>
+      <span>NEXORA</span>
+    </a>
+    <a class="botao pequeno" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Vi%20a%20p%C3%A1gina%20e%20quero%20colocar%20a%20minha%20empresa%20para%20ser%20vista." target="_blank" rel="noopener" aria-label="Falar com a Nexora no WhatsApp">
+      <svg aria-hidden="true"><use href="#zap"/></svg><span>Falar no WhatsApp</span>
+    </a>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <section class="escura hero">
+    <div class="dentro">
+      <div>
+        <p class="rotulo">Tráfego pago para empresas</p>
+        <h1>Sua empresa na frente de quem está <span class="azul">pronto para comprar.</span></h1>
+        <p class="apoio">Quem não é visto não é lembrado. A Nexora coloca a sua marca na tela do cliente certo e mede cada real investido, para a sua empresa crescer com previsibilidade.</p>
+        <div class="acoes">
+          <a class="botao" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Vi%20a%20p%C3%A1gina%20e%20quero%20colocar%20a%20minha%20empresa%20para%20ser%20vista." target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#zap"/></svg>Quero minha empresa sendo vista
+          </a>
+          <a class="elo" href="#como-funciona">Ver como funciona</a>
+        </div>
+        <p class="plataformas"><span>Anunciamos em</span><strong>Meta Ads</strong><strong>Google Ads</strong><strong>TikTok Ads</strong></p>
+      </div>
+
+      <div class="grafico">
+        <svg viewBox="0 0 520 380" role="img" aria-label="Uma linha que sobe em três momentos: a empresa é vista, depois procurada e por fim escolhida pelo cliente.">
+          <defs>
+            <pattern id="pontos" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#A9BCFF" opacity=".22"/></pattern>
+            <linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B50FF" stop-opacity=".34"/><stop offset="1" stop-color="#2B50FF" stop-opacity="0"/></linearGradient>
+          </defs>
+          <rect x="0" y="0" width="520" height="380" fill="url(#pontos)"/>
+          <path d="M28 318C120 312 150 276 214 258S318 214 360 150S424 78 462 62V340H28Z" fill="url(#area)"/>
+          <path class="traco" d="M28 318C120 312 150 276 214 258S318 214 360 150S424 78 462 62" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+          <line x1="28" y1="340" x2="492" y2="340" stroke="#A9BCFF" stroke-opacity=".3" stroke-width="1"/>
+
+          <circle cx="112" cy="306" r="7" fill="#0A0E1A" stroke="#fff" stroke-width="3"/>
+          <text x="112" y="278" fill="#fff" font-size="17" font-weight="600" text-anchor="middle">Vista</text>
+          <text x="112" y="364" fill="#A9BCFF" font-size="12.5" text-anchor="middle">o cliente conhece</text>
+
+          <circle cx="290" cy="228" r="7" fill="#0A0E1A" stroke="#fff" stroke-width="3"/>
+          <text x="262" y="204" fill="#fff" font-size="17" font-weight="600" text-anchor="middle">Procurada</text>
+          <text x="290" y="364" fill="#A9BCFF" font-size="12.5" text-anchor="middle">o cliente chama</text>
+
+          <circle class="halo" cx="462" cy="62" r="13" fill="#2B50FF"/>
+          <circle cx="462" cy="62" r="13" fill="#2B50FF"/>
+          <circle cx="462" cy="62" r="4" fill="#C8FF4D"/>
+          <text x="436" y="38" fill="#fff" font-size="17" font-weight="600" text-anchor="end">Escolhida</text>
+          <text x="452" y="364" fill="#A9BCFF" font-size="12.5" text-anchor="middle">o cliente compra</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa clara">
+    <div class="dentro">
+      <p class="rotulo">O problema</p>
+      <h2 class="titulo">Ter um bom produto não basta se ninguém sabe que ele existe.</h2>
+      <p class="apoio">Enquanto a sua empresa espera o cliente aparecer, o concorrente que anuncia está na tela dele todos os dias. Estes são os sinais de que é hora de mudar isso.</p>
+      <div class="grade g2">
+        <div class="cartao"><h3>Você depende só de indicação</h3><p>As vendas oscilam porque não existe uma fonte previsível de novos contatos.</p></div>
+        <div class="cartao"><h3>Já impulsionou e não viu retorno</h3><p>Impulsionar um post não é o mesmo que rodar uma campanha com público, estratégia e medição.</p></div>
+        <div class="cartao"><h3>Não sabe de onde vêm as vendas</h3><p>Sem rastreamento, fica impossível saber qual ação está funcionando.</p></div>
+        <div class="cartao"><h3>Quer crescer com previsibilidade</h3><p>Você precisa de um canal que possa ser ampliado conforme o resultado aparece.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa escura">
+    <div class="dentro">
+      <p class="rotulo">O que o tráfego pago faz</p>
+      <h2 class="titulo">O caminho mais rápido entre a sua empresa e o cliente.</h2>
+      <p class="apoio">Tráfego pago é investir em anúncios para levar as pessoas certas até a sua marca. Em vez de esperar o cliente encontrar você, a sua oferta aparece para quem já tem perfil ou intenção de compra.</p>
+      <div class="ganchos">
+        <div class="gancho"><h3>Visibilidade</h3><p>Sua marca aparece todos os dias para as pessoas da sua região e do seu público. Quem nunca ouviu falar de você passa a conhecer.</p></div>
+        <div class="gancho"><h3>Demanda</h3><p>Quem viu o anúncio chama no WhatsApp, visita a página e pede orçamento. Você deixa de depender só de indicação.</p></div>
+        <div class="gancho"><h3>Crescimento</h3><p>Você sabe quanto investiu, quantas pessoas chegaram e quanto voltou em venda. O que funciona recebe mais verba e a empresa cresce com controle.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa papel">
+    <div class="dentro">
+      <p class="rotulo">Onde a sua empresa aparece</p>
+      <h2 class="titulo">Nos lugares onde o seu cliente já passa o dia.</h2>
+      <div class="grade g3">
+        <div class="cartao"><p class="onde">Instagram e Facebook</p><h3>Meta Ads</h3><p>Ideal para gerar desejo e alcançar públicos por interesse e comportamento.</p></div>
+        <div class="cartao"><p class="onde">Pesquisa, YouTube e Display</p><h3>Google Ads</h3><p>Ideal para captar quem já está procurando o que você vende.</p></div>
+        <div class="cartao"><p class="onde">Vídeo curto</p><h3>TikTok Ads</h3><p>Grande alcance. Ideal para marcas que querem atenção e descoberta.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa clara">
+    <div class="dentro">
+      <p class="rotulo">O que está incluído</p>
+      <h2 class="titulo">Uma campanha completa, não um post impulsionado.</h2>
+      <div class="itens">
+        <div class="item"><h3>Planejamento de campanhas</h3><p>Definimos objetivo, público, verba e mensagem para cada etapa da jornada do cliente.</p></div>
+        <div class="item"><h3>Segmentação de públicos</h3><p>Encontramos quem tem mais chance de comprar e criamos remarketing para quem já demonstrou interesse.</p></div>
+        <div class="item"><h3>Criativos e textos</h3><p>Produzimos e testamos várias versões de anúncio para descobrir o que mais converte.</p></div>
+        <div class="item"><h3>Rastreamento</h3><p>Configuramos pixel e eventos de conversão para saber de qual anúncio veio cada resultado.</p></div>
+        <div class="item"><h3>Otimização contínua</h3><p>Acompanhamos as campanhas, pausamos o que não rende e colocamos mais verba no que funciona.</p></div>
+        <div class="item"><h3>Relatórios claros</h3><p>Você recebe os números que importam, explicados em linguagem simples.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa papel" id="como-funciona">
+    <div class="dentro">
+      <p class="rotulo">Como funciona</p>
+      <h2 class="titulo">Quatro etapas, e você acompanha cada uma.</h2>
+      <div class="etapas">
+        <div class="etapa"><h3>Diagnóstico</h3><p>Analisamos o negócio, o público, a oferta e o histórico de anúncios.</p></div>
+        <div class="etapa"><h3>Estrutura</h3><p>Organizamos as contas, o rastreamento e os públicos.</p></div>
+        <div class="etapa"><h3>Lançamento</h3><p>Colocamos as campanhas no ar com criativos em teste.</p></div>
+        <div class="etapa"><h3>Otimização</h3><p>Ajustamos com base nos dados e escalamos o que dá resultado.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa escura">
+    <div class="dentro">
+      <p class="rotulo">Sem achismo</p>
+      <h2 class="titulo">Cada decisão tem um número por trás.</h2>
+      <p class="apoio">Você não precisa confiar em promessa. Acompanha os mesmos números que a gente usa para decidir onde colocar a sua verba.</p>
+      <dl class="numeros">
+        <div class="numero"><dt>CPL</dt><dd><strong>Custo por lead.</strong> Quanto custa cada contato interessado.</dd></div>
+        <div class="numero"><dt>CAC</dt><dd><strong>Custo de aquisição.</strong> Quanto custa conquistar cada cliente.</dd></div>
+        <div class="numero"><dt>ROAS</dt><dd><strong>Retorno sobre o investimento em anúncios.</strong> Quanto volta para cada real investido.</dd></div>
+        <div class="numero"><dt>CTR</dt><dd><strong>Taxa de cliques.</strong> Quantas pessoas clicam depois de ver o anúncio.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="faixa clara">
+    <div class="dentro">
+      <p class="rotulo">Além do anúncio</p>
+      <h2 class="titulo">Marketing e tecnologia no mesmo time.</h2>
+      <p class="apoio">O tráfego pago é o motor. Os outros serviços da Nexora existem para que cada real investido em anúncio renda mais.</p>
+      <div class="grade g4">
+        <div class="cartao"><h3>Design</h3><p>Cria os anúncios que fazem a pessoa parar de rolar a tela e clicar.</p></div>
+        <div class="cartao"><h3>Inteligência artificial</h3><p>Atende o lead no mesmo minuto em que ele chama.</p></div>
+        <div class="cartao"><h3>Tecnologia</h3><p>Páginas rápidas e rastreamento que mede cada venda.</p></div>
+        <div class="cartao"><h3>Estratégia com dados</h3><p>Mostra onde a verba rende mais, do planejamento ao ajuste.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa escura final" id="contato">
+    <div class="dentro">
+      <p class="rotulo">Próximo passo</p>
+      <h2>Vamos colocar a sua empresa para <span class="azul">ser vista?</span></h2>
+      <p class="apoio">Chame no WhatsApp e conte onde o seu negócio está hoje e aonde quer chegar. A partir daí, mostramos o caminho.</p>
+      <div class="contato">
+        <a class="botao" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Vi%20a%20p%C3%A1gina%20e%20quero%20colocar%20a%20minha%20empresa%20para%20ser%20vista." target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#zap"/></svg>Chamar no WhatsApp
+        </a>
+        <p class="telefone"><small>WhatsApp</small>(86) 99434-9428</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="dentro">
+    <span><b>NEXORA</b> &nbsp;·&nbsp; Technology &amp; Marketing</span>
+    <span>Conectamos marcas ao próximo nível.</span>
+  </div>
+</footer>
+
+<a class="flutuante" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Vi%20a%20p%C3%A1gina%20e%20quero%20colocar%20a%20minha%20empresa%20para%20ser%20vista." target="_blank" rel="noopener" aria-label="Chamar a Nexora no WhatsApp">
+  <svg aria-hidden="true"><use href="#zap"/></svg>
+</a>
+
+</body>
+</html>
