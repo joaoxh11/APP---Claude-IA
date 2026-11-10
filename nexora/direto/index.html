@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexora | O que o tráfego pago faz pela sua empresa</title>
+<meta name="description" content="Tráfego pago traz visibilidade, lead qualificado e uma visão clara do seu mercado. A Nexora anuncia a sua empresa em Meta Ads, Google Ads e TikTok Ads.">
+<meta name="theme-color" content="#0A0E1A">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Nexora">
+<meta property="og:title" content="Nexora | O que o tráfego pago faz pela sua empresa">
+<meta property="og:description" content="Mais gente vendo. Gente certa chamando. E você enxergando o seu mercado com clareza.">
+<meta property="og:image" content="https://joaoxh11.github.io/APP---Claude-IA/nexora/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='22' fill='%230A0E1A'/%3E%3Cpath d='M28 76V28l44 48V48' fill='none' stroke='%23fff' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='72' cy='27' r='7.5' fill='%232B50FF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Outfit:wght@400;500;600&display=swap">
+<style>
+/* Layout: página curta em quatro faixas. Tipografia grande faz o trabalho; três benefícios numerados em linhas largas. */
+:root{
+  --noite:#0A0E1A;
+  --noite-2:#121829;
+  --azul:#2B50FF;
+  --azul-escuro:#1F3EDB;
+  --azul-claro:#6F8BFF;
+  --nevoa:#A9BCFF;
+  --marfim:#F4F2EC;
+  --papel:#FBFAF6;
+  --grafite:#8A8F9C;
+  --grafite-escuro:#565B68;
+  --pulso:#C8FF4D;
+  --linha-clara:rgba(10,14,26,.12);
+  --linha-escura:rgba(169,188,255,.18);
+  --display:"Outfit","Segoe UI",system-ui,sans-serif;
+  --texto:"Manrope","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--noite);color:var(--noite);font-family:var(--texto);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+svg{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.06;letter-spacing:-.02em;text-wrap:balance}
+:focus-visible{outline:3px solid var(--pulso);outline-offset:3px;border-radius:6px}
+
+.faixa{padding-block:clamp(60px,8vw,104px)}
+.dentro{max-width:1080px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.escura{background:var(--noite);color:#fff}
+.clara{background:var(--marfim)}
+.papel{background:var(--papel)}
+.rotulo{font-size:.76rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--azul);display:flex;align-items:center;gap:10px}
+.rotulo::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
+.escura .rotulo{color:var(--nevoa)}
+.titulo{font-size:clamp(2rem,4.6vw,3.2rem);margin-top:18px;max-width:20ch}
+.azul{color:var(--azul)}
+.escura .azul{color:var(--azul-claro)}
+
+.botao{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--azul);color:#fff;font-weight:700;font-size:1rem;text-decoration:none;padding:16px 26px;border-radius:999px;transition:background .2s,transform .2s}
+.botao:hover{background:var(--azul-escuro);transform:translateY(-1px)}
+.botao svg{width:20px;height:20px;flex:none}
+.botao.pequeno{padding:11px 18px;font-size:.92rem}
+
+.topo{position:sticky;top:0;z-index:20;background:rgba(10,14,26,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--linha-escura);color:#fff}
+.topo .dentro{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca svg{width:30px;height:30px}
+.marca span{font-family:var(--display);font-weight:500;letter-spacing:.3em;font-size:1.02rem}
+
+/* Hero */
+.hero{padding-block:clamp(52px,8vw,112px) clamp(56px,7vw,96px)}
+.hero h1{font-size:clamp(2.7rem,8vw,5.6rem);margin-top:24px;max-width:13ch}
+.hero .apoio{margin-top:26px;max-width:44ch;font-size:1.16rem;color:var(--nevoa)}
+.hero .botao{margin-top:34px}
+.tres{margin-top:52px;padding-top:24px;border-top:1px solid var(--linha-escura);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 28px;list-style:none;padding-left:0;margin-bottom:0}
+.tres li{font-family:var(--display);font-size:clamp(1.05rem,2vw,1.35rem);display:flex;gap:12px;align-items:baseline}
+.tres li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--azul);flex:none}
+.tres li:last-child::before{background:var(--pulso)}
+
+/* Benefícios */
+.beneficios{counter-reset:b;margin-top:44px;border-top:2px solid var(--noite)}
+.beneficio{counter-increment:b;display:grid;grid-template-columns:72px minmax(0,.9fr) minmax(0,1.1fr);gap:10px 32px;padding-block:34px;border-bottom:1px solid var(--linha-clara);align-items:start}
+.beneficio::before{content:counter(b);font-family:var(--display);font-size:3.2rem;line-height:.9;color:var(--azul)}
+.beneficio h3{font-size:clamp(1.7rem,3.4vw,2.4rem)}
+.beneficio .resumo{margin-top:10px;font-weight:600}
+.beneficio .explica{color:var(--grafite-escuro)}
+
+/* Sem x Com */
+.versus{margin-top:44px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.coluna{border-radius:18px;padding:28px}
+.coluna h3{font-size:1.3rem;padding-bottom:16px}
+.coluna ul{list-style:none;margin:0;padding:0}
+.coluna li{padding-block:16px;display:flex;gap:14px;align-items:flex-start;border-top:1px solid}
+.coluna svg{width:20px;height:20px;flex:none;margin-top:3px}
+.sem{background:var(--marfim);color:var(--grafite-escuro);border:1px solid var(--linha-clara)}
+.sem h3{color:var(--noite)}
+.sem li{border-color:var(--linha-clara)}
+.sem svg{color:var(--grafite)}
+.com{background:var(--noite);color:#fff}
+.com li{border-color:var(--linha-escura)}
+.com svg{color:var(--azul-claro)}
+
+/* Onde */
+.onde{margin-top:36px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--linha-escura)}
+.canal{padding:26px 28px 26px 0;border-bottom:1px solid var(--linha-escura)}
+.canal + .canal{padding-left:28px;border-left:1px solid var(--linha-escura)}
+.canal h3{font-size:1.5rem}
+.canal p{margin-top:8px;color:var(--nevoa);font-size:.98rem}
+
+/* Final */
+.final h2{font-size:clamp(2.2rem,5.6vw,4.2rem);max-width:16ch;margin-top:18px}
+.final .apoio{margin-top:20px;max-width:50ch;color:var(--nevoa);font-size:1.08rem}
+.contato{margin-top:34px;display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px}
+.telefone{font-family:var(--display);font-size:1.3rem;letter-spacing:.02em;user-select:all}
+.telefone small{display:block;font-family:var(--texto);font-size:.74rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--nevoa)}
+.divisor{border:0;border-top:1px solid var(--linha-escura);margin:0}
+
+.rodape{background:var(--noite);color:var(--grafite);border-top:1px solid var(--linha-escura);font-size:.86rem}
+.rodape .dentro{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:26px calc(26px + env(safe-area-inset-bottom,0px))}
+.rodape b{color:#fff;font-family:var(--display);font-weight:500;letter-spacing:.28em}
+
+.flutuante{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;width:58px;height:58px;border-radius:50%;background:var(--azul);color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(10,14,26,.4)}
+.flutuante svg{width:28px;height:28px}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  .tres,.versus,.onde{grid-template-columns:minmax(0,1fr)}
+  .beneficio{grid-template-columns:48px minmax(0,1fr)}
+  .beneficio::before{font-size:2.4rem}
+  .beneficio .explica{grid-column:2}
+  .canal,.canal + .canal{padding:22px 0;border-left:0}
+  .topo .botao span{display:none}
+  .topo .botao{padding:11px 14px}
+  .hero .botao,.contato .botao{width:100%}
+  .flutuante{display:flex}
+  .rodape .dentro{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.botao{transition:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="zap" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.2-.32a8.2 8.2 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24ZM8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01Z"/></symbol>
+  <symbol id="simbolo" viewBox="0 0 100 100"><path d="M24 80V22l52 58V46" fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="76" cy="22" r="8.5" fill="#2B50FF"/></symbol>
+  <symbol id="nao" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="sim" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="topo">
+  <div class="dentro">
+    <a class="marca" href="#inicio" aria-label="Nexora, início">
+      <svg aria-hidden="true"><use href="#simbolo"/></svg>
+      <span>NEXORA</span>
+    </a>
+    <a class="botao pequeno" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Quero%20saber%20o%20que%20o%20tr%C3%A1fego%20pago%20pode%20fazer%20pela%20minha%20empresa." target="_blank" rel="noopener" aria-label="Falar com a Nexora no WhatsApp">
+      <svg aria-hidden="true"><use href="#zap"/></svg><span>Falar no WhatsApp</span>
+    </a>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <section class="escura hero">
+    <div class="dentro">
+      <p class="rotulo">Tráfego pago</p>
+      <h1>Sua empresa vista por quem <span class="azul">quer comprar.</span></h1>
+      <p class="apoio">Tráfego pago é anúncio na tela do cliente certo. Mais gente conhece a sua empresa, mais gente chama, e você enxerga o seu mercado com clareza.</p>
+      <a class="botao" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Quero%20saber%20o%20que%20o%20tr%C3%A1fego%20pago%20pode%20fazer%20pela%20minha%20empresa." target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#zap"/></svg>Quero anunciar minha empresa
+      </a>
+      <ul class="tres">
+        <li>Visibilidade</li>
+        <li>Lead qualificado</li>
+        <li>Visão de mercado</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="faixa clara">
+    <div class="dentro">
+      <p class="rotulo">Por que vale a pena</p>
+      <h2 class="titulo">O que o tráfego pago faz pela sua empresa.</h2>
+      <div class="beneficios">
+        <div class="beneficio">
+          <div><h3>Visibilidade</h3><p class="resumo">Sua marca aparece todos os dias.</p></div>
+          <p class="explica">Quem nunca ouviu falar da sua empresa passa a ver o seu nome no Instagram, no Google e no TikTok. Quem é visto é lembrado na hora de comprar.</p>
+        </div>
+        <div class="beneficio">
+          <div><h3>Lead qualificado</h3><p class="resumo">Chama quem tem perfil de cliente.</p></div>
+          <p class="explica">O anúncio é mostrado por região, interesse e intenção de compra. Você recebe menos curioso e mais gente pronta para pedir orçamento.</p>
+        </div>
+        <div class="beneficio">
+          <div><h3>Visão de mercado</h3><p class="resumo">Você decide com número, não com achismo.</p></div>
+          <p class="explica">Cada campanha mostra quem é o seu público, qual oferta chama mais atenção e quanto custa cada cliente. É uma leitura do mercado que nenhuma indicação entrega.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa papel">
+    <div class="dentro">
+      <p class="rotulo">A diferença</p>
+      <h2 class="titulo">A mesma empresa, com e sem anúncio.</h2>
+      <div class="versus">
+        <div class="coluna sem">
+          <h3>Sem tráfego pago</h3>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#nao"/></svg><span>Só te encontra quem já te conhece.</span></li>
+            <li><svg aria-hidden="true"><use href="#nao"/></svg><span>As vendas dependem de indicação e oscilam.</span></li>
+            <li><svg aria-hidden="true"><use href="#nao"/></svg><span>Você não sabe de onde veio cada cliente.</span></li>
+            <li><svg aria-hidden="true"><use href="#nao"/></svg><span>O concorrente que anuncia aparece primeiro.</span></li>
+          </ul>
+        </div>
+        <div class="coluna com">
+          <h3>Com tráfego pago</h3>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#sim"/></svg><span>Sua marca chega a quem ainda não te conhece.</span></li>
+            <li><svg aria-hidden="true"><use href="#sim"/></svg><span>Contatos novos chegam por um canal previsível.</span></li>
+            <li><svg aria-hidden="true"><use href="#sim"/></svg><span>Você sabe qual anúncio trouxe cada resultado.</span></li>
+            <li><svg aria-hidden="true"><use href="#sim"/></svg><span>O que funciona recebe mais verba e a empresa cresce.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa escura">
+    <div class="dentro">
+      <p class="rotulo">Onde publicamos</p>
+      <h2 class="titulo">Onde o seu cliente já está.</h2>
+      <div class="onde">
+        <div class="canal"><h3>Meta Ads</h3><p>Instagram e Facebook. Para gerar desejo e alcançar o público certo.</p></div>
+        <div class="canal"><h3>Google Ads</h3><p>Pesquisa e YouTube. Para captar quem já procura o que você vende.</p></div>
+        <div class="canal"><h3>TikTok Ads</h3><p>Vídeo curto. Para ganhar atenção e ser descoberto.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divisor">
+
+  <section class="faixa escura final" id="contato">
+    <div class="dentro">
+      <p class="rotulo">Próximo passo</p>
+      <h2>Vamos colocar a sua empresa para <span class="azul">ser vista?</span></h2>
+      <p class="apoio">Chame no WhatsApp e conte onde o seu negócio está hoje. A gente mostra o caminho.</p>
+      <div class="contato">
+        <a class="botao" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Quero%20saber%20o%20que%20o%20tr%C3%A1fego%20pago%20pode%20fazer%20pela%20minha%20empresa." target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#zap"/></svg>Chamar no WhatsApp
+        </a>
+        <p class="telefone"><small>WhatsApp</small>(86) 99434-9428</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="dentro">
+    <span><b>NEXORA</b> &nbsp;·&nbsp; Technology &amp; Marketing</span>
+    <span>Conectamos marcas ao próximo nível.</span>
+  </div>
+</footer>
+
+<a class="flutuante" href="https://wa.me/5586994349428?text=Ol%C3%A1%2C%20Nexora!%20Quero%20saber%20o%20que%20o%20tr%C3%A1fego%20pago%20pode%20fazer%20pela%20minha%20empresa." target="_blank" rel="noopener" aria-label="Chamar a Nexora no WhatsApp">
+  <svg aria-hidden="true"><use href="#zap"/></svg>
+</a>
+
+</body>
+</html>
